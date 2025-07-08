@@ -9,7 +9,9 @@ import AcedemiaEBCT from "./pages/AcademiaEBCTPage";
 import EmpresasPage from "./pages/EmpresasPage";
 import AcademicosPage from "./pages/AcademicosPage";
 import Footer from "./pages/components/Footer";
+import EmpresasForm from "./pages/EmpresasForm"
 import VentureStudioPage from "./pages/VentureStudioPage";
+import AcademicosForm from "./pages/AcademicosForm";
 
 function App() {
   return (
@@ -36,7 +38,10 @@ function App() {
               element={<AcedemiaEBCT />}
             />
             <Route path="/empresas" element={<EmpresasPage />} />
+            <Route path="/empresas/inscripcion" element={<EmpresasForm />} />
+
             <Route path="/academicos" element={<AcademicosPage />} />
+            <Route path="/academicos/inscripcion" element={<AcademicosForm />} />
             <Route path="/venture-studio" element={<VentureStudioPage />} />
           </Routes>
         </main>
