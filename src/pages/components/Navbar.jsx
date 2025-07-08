@@ -6,7 +6,7 @@ import {
   GraduationCap,
   Menu, // Icono para el botón de hamburguesa
 } from "lucide-react";
-import mainLogo from "../../assets/Facultad de Ingeniería_AZUL.png";
+import mainLogo from "../../assets/FINAZUL.png";
 import { Button } from "@/components/ui/button";
 
 import {
