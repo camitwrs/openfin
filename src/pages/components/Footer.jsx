@@ -1,6 +1,6 @@
 import pucvlogo from "../../assets/pucv.gif";
 import anidlogo from "../../assets/anid.png";
-import finLogo from "../../assets/Facultad de Ingeniería_COLOR.png";
+import finLogo from "../../assets/FINCOLOR.png";
 import otlLogo from "../../assets/logo_OTL.png";
 import inesLogo from "../../assets/ines.png";
 import vicerrectoriaLogo from "../../assets/vicerrectoria.svg";
