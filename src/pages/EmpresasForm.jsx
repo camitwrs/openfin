@@ -298,7 +298,7 @@ export default function EmpresasForm({ onSubmit }) {
                   </Label>
                   <Input
                     id="numeroTelefono"
-                    placeholder="+56 9 1234 5678"
+                    placeholder="9 1234 5678"
                     value={formData.numeroTelefono}
                     onChange={(e) =>
                       handleInputChange("numeroTelefono", e.target.value)
