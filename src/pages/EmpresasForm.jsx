@@ -1,13 +1,26 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Mantendremos CardHeader/CardTitle aunque los usaremos de otra forma
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
-import { Building2, Mail, Phone, Globe, Users, Target } from "lucide-react";
+import {
+  Building2,
+  Mail,
+  Phone,
+  Globe,
+  Users,
+  Target,
+  Loader2, // Icono de spinner
+  CheckCircle, // Icono de éxito
+  XCircle, // Icono de error
+  Send, // Icono para el estado normal de envío
+} from "lucide-react";
+
+import { postInscripcionEmpresa } from "../api/empresas.js"; // Asegúrate que el path sea correcto
 
 export default function EmpresasForm({ onSubmit }) {
   const [formData, setFormData] = useState({
@@ -27,6 +40,8 @@ export default function EmpresasForm({ onSubmit }) {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
   const vinculoOptions = [
     "Sí, soy Alumni (pregrado)",
@@ -70,7 +85,6 @@ export default function EmpresasForm({ onSubmit }) {
       "empresaOrganizacion",
       "areaTrabajo",
       "contactoWeb",
-      // No validamos vinculoPUCV como obligatorio aquí para no forzar la selección inicial
     ];
 
     requiredFields.forEach((field) => {
@@ -90,24 +104,90 @@ export default function EmpresasForm({ onSubmit }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      if (onSubmit) {
-        onSubmit(formData);
-      } else {
-        console.log("Datos del formulario:", formData);
-        alert("Formulario enviado exitosamente!");
-      }
+    setSubmitMessage({ type: "", text: "" }); // Limpiar mensajes anteriores
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true); // Deshabilitar botón de envío
+    try {
+      const response = await postInscripcionEmpresa(formData); // Llamada a la API
+      console.log("Respuesta de la API:", response);
+      setSubmitMessage({
+        type: "success",
+        text: response.message || "¡Inscripción enviada con éxito!",
+      });
+      // Limpiar el formulario después del éxito
+      setFormData({
+        nombre: "",
+        apellido: "",
+        correoElectronico: "",
+        numeroTelefono: "",
+        empresaOrganizacion: "",
+        areaTrabajo: "",
+        contactoWeb: "",
+        vinculoPUCV: [],
+        actividadesServicios: "",
+        desafio1: "",
+        desafio2: "",
+        desafio3: "",
+        interesInformacion: "",
+      });
+      // Opcional: Desaparecer el mensaje de éxito después de X segundos
+      setTimeout(() => setSubmitMessage({ type: "", text: "" }), 5000); // 5 segundos
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      setSubmitMessage({
+        type: "error",
+        text: error.message || "Ocurrió un error al enviar la inscripción.",
+      });
+    } finally {
+      setIsSubmitting(false); // Habilitar el botón de nuevo
     }
   };
 
+  // Determinar el icono y el texto del botón
+  const getButtonContent = () => {
+    if (isSubmitting) {
+      return (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Enviando...
+        </>
+      );
+    }
+    if (submitMessage.type === "success") {
+      return (
+        <>
+          <CheckCircle className="mr-2 h-4 w-4" />
+          ¡Enviado!
+        </>
+      );
+    }
+    if (submitMessage.type === "error") {
+      return (
+        <>
+          <XCircle className="mr-2 h-4 w-4" />
+          Error al Enviar
+        </>
+      );
+    }
+    return (
+      <>
+        <Send className="mr-2 h-4 w-4" />
+        Enviar Inscripción
+      </>
+    );
+  };
+
   return (
-    <div className=" bg-slate-100 py-8">
+    <div className="bg-slate-100 py-8">
       <div className="max-w-4xl mx-auto px-6">
         {/* Contenedor Único del Formulario y Encabezado */}
         <Card className="border-0 shadow-xl overflow-hidden">
-          {/* Antiguo Header Card - Sección visual */}
+          {/* Header Card - Sección visual */}
           <div className="relative h-32 bg-gradient-to-r from-orange-500 via-blue-600 to-teal-600">
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="relative h-full flex items-center justify-center">
@@ -127,7 +207,18 @@ export default function EmpresasForm({ onSubmit }) {
 
           {/* Contenido principal del formulario, antes estaba en el Form Card */}
           <CardContent className="p-6">
-            {/* Texto introductorio movido aquí */}
+            {/* Mensajes de feedback */}
+            {submitMessage.text && (
+              <div
+                className={`p-4 mb-6 rounded-md ${
+                  submitMessage.type === "success"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {submitMessage.text}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
@@ -436,8 +527,10 @@ export default function EmpresasForm({ onSubmit }) {
                 <Button
                   type="submit"
                   className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-3 text-lg"
+                  disabled={isSubmitting || submitMessage.type === "success"} // Deshabilitar después del éxito también
                 >
-                  Enviar Inscripción
+                  {getButtonContent()}{" "}
+                  {/* Usamos la función para el contenido del botón */}
                 </Button>
               </div>
             </form>
