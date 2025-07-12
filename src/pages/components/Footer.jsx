@@ -85,18 +85,18 @@ function Footer() {
                   // En xl: también adaptamos
 
                   section.logos.length === 2
-                    ? "grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 max-w-sm" // Si hay 2 logos, 2 columnas y un max-w más pequeño para que estén más juntos
+                    ? "grid-cols-2 lg:grid-cols-2 xl:grid-cols-2" // Si hay 2 logos, 2 columnas y un max-w más pequeño para que estén más juntos
                     : section.logos.length === 3
-                    ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 max-w-md" // Si hay 3 logos, 3 columnas y un max-w medio
+                    ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3" // Si hay 3 logos, 3 columnas y un max-w medio
                     : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5" // Por defecto (para 5+ logos o si quieres que se estiren más)
-                } mx-auto`} // mx-auto para centrar la grilla si no llena el ancho del flex padre
+                } `} // mx-auto para centrar la grilla si no llena el ancho del flex padre
               >
                 {section.logos.map((logo, logoIndex) => (
                   <img
                     key={logoIndex}
                     src={logo.src}
                     alt={logo.alt}
-                    className="sm:h-16 md:h-20 lg:h-24 w-auto object-contain" // Tamaños de logos
+                    className="sm:h-8 md:h-12 lg:h-16"
                   />
                 ))}
               </div>
