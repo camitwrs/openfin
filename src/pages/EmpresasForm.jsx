@@ -114,7 +114,6 @@ export default function EmpresasForm({ onSubmit }) {
     setIsSubmitting(true); // Deshabilitar botón de envío
     try {
       const response = await postInscripcionEmpresa(formData); // Llamada a la API
-      console.log("Respuesta de la API:", response);
       setSubmitMessage({
         type: "success",
         text: response.message || "¡Inscripción enviada con éxito!",

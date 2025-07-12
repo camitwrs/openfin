@@ -4,6 +4,7 @@ import {
   BookOpen,
   ChevronDown,
   GraduationCap,
+  Lightbulb,
   Menu, // Icono para el botón de hamburguesa
 } from "lucide-react";
 import mainLogo from "../../assets/FINAZUL.png";
@@ -49,7 +50,7 @@ export default function Navbar() {
         {/* Menú de Botones (oculto en móviles, visible en md y más grandes) */}
         <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
           {/* Estudiantes con DropdownMenu */}
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 className="cursor-pointer flex items-center gap-1.5 px-3 py-2"
@@ -57,8 +58,7 @@ export default function Navbar() {
               >
                 <GraduationCap className="w-5 h-5" />
                 <span>Estudiantes</span>
-                <ChevronDown className="w-4 h-4 ml-1" />{" "}
-                {/* Añadí un pequeño margen al icono */}
+                <ChevronDown className="w-4 h-4 ml-1" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" sideOffset={4} className="w-56">
@@ -74,9 +74,9 @@ export default function Navbar() {
                 <Link to="/estudiantes/academia-ebct">Academia EBCT</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
-          <Button variant="outline" asChild>
+          {/* <Button variant="outline" asChild>
             <Link
               to="/empresas"
               className="flex items-center gap-1.5 px-3 py-2"
@@ -84,16 +84,24 @@ export default function Navbar() {
               <Building2 className="w-5 h-5" />
               <span>Empresas</span>
             </Link>
-          </Button>
+          </Button> */}
 
-          {/* Académicos/as */}
-          <Button variant="outline" asChild>
+          {/* <Button variant="outline" asChild>
             <Link
               to="/academicos"
               className="flex items-center gap-1.5 px-3 py-2"
             >
               <BookOpen className="w-5 h-5" />
               <span>Académicos/as</span>
+            </Link>
+          </Button> */}
+          <Button variant="outline" size="lg" asChild>
+            <Link
+              to="/"
+              className="flex items-center gap-1.5 px-3 py-2"
+            >
+              <Lightbulb className="w-5 h-5" />
+              <span>Desafíos</span>
             </Link>
           </Button>
         </div>
@@ -117,15 +125,13 @@ export default function Navbar() {
                 </SheetDescription>
               </SheetHeader>
               <nav className="flex flex-col gap-4">
-                {/* Elementos del menú móvil */}
-                <Link
+                {/* <Link
                   to="/estudiantes"
                   className="flex items-center gap-3 text-lg font-medium text-sky-800 hover:text-sky-600 transition-colors py-2"
                 >
                   <GraduationCap className="w-6 h-6" />
                   Estudiantes
                 </Link>
-                {/* Submenú de estudiantes dentro del Sheet (opcional, si quieres más anidamiento) */}
                 <div className="pl-6 flex flex-col gap-2">
                   <Link
                     to="/estudiantes/connecta-industria"
@@ -159,6 +165,13 @@ export default function Navbar() {
                 >
                   <BookOpen className="w-6 h-6" />
                   Académicos/as
+                </Link> */}
+                <Link
+                  to="/" // Mismas rutas que el botón de escritorio
+                  className="flex items-center gap-3 text-lg font-medium text-sky-800 hover:text-sky-600 transition-colors py-2"
+                >
+                  <Lightbulb className="w-6 h-6" />
+                  Desafíos
                 </Link>
               </nav>
             </SheetContent>

@@ -9,22 +9,23 @@ import AcedemiaEBCT from "./pages/AcademiaEBCTPage";
 import EmpresasPage from "./pages/EmpresasPage";
 import AcademicosPage from "./pages/AcademicosPage";
 import Footer from "./pages/components/Footer";
-import EmpresasForm from "./pages/EmpresasForm"
+import EmpresasForm from "./pages/EmpresasForm";
 import VentureStudioPage from "./pages/VentureStudioPage";
 import AcademicosForm from "./pages/AcademicosForm";
+import DesafiosPage from "./pages/DesafiosPage";
+import DesafiosForm from "./pages/DesafiosForm";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* 1. Contenedor flex-col para que Navbar quede arriba y main crezca */}
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        {/* 2. Main con flex-grow para que HomePage y rutas llenen el resto */}
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/estudiantes" element={<EstudiantesPage />} />
+            <Route path="/" element={<DesafiosPage />} />
+            <Route path="/desafios-inscripcion" element={<DesafiosForm />} />
+            {/* <Route path="/estudiantes" element={<EstudiantesPage />} />
             <Route
               path="/estudiantes/connecta-industria"
               element={<ConnectaIndustriaPage />}
@@ -42,7 +43,7 @@ function App() {
 
             <Route path="/academicos" element={<AcademicosPage />} />
             <Route path="/academicos/inscripcion" element={<AcademicosForm />} />
-            <Route path="/venture-studio" element={<VentureStudioPage />} />
+            <Route path="/venture-studio" element={<VentureStudioPage />} /> */}
           </Routes>
         </main>
         <Footer />

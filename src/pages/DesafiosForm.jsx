@@ -1,34 +1,46 @@
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import {
-  GraduationCap,
   Mail,
   Building2,
   Users,
   Lightbulb,
-  Loader2, // Icono de spinner
-  CheckCircle, // Icono de éxito
-  XCircle, // Icono de error
-  Send, // Icono para el estado normal de envío
+  Loader2, // Spinner icon
+  CheckCircle, // Success icon
+  XCircle, // Error icon
+  Send, // Normal send icon
+  ClipboardList, // Icon for challenges
+  ArrowLeft,
 } from "lucide-react";
 
-import { postInscripcionAcademico } from "../api/academicos.js";
+import { postInscripcionDesafio } from "../api/desafios.js";
 
-export default function AcademicosForm({ onSubmit }) {
+export default function DesafiosForm() {
+  useLayoutEffect(() => {
+    // Scroll al principio de la página cuando el componente se monta
+    // useLayoutEffect es preferible aquí para que el scroll ocurra antes del renderizado del navegador
+    window.scrollTo(0, 0);
+  }, []); // El array de dependencias
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    nombreApellido: "",
+    nombre: "",
+    apellido: "",
     correoElectronico: "",
-    unidadAcademica: "",
-    otraUnidad: "",
-    capacidadesID: "",
-    acompanante: "",
+    unidadAcademica: "", // Ahora contendrá el valor final (directo o de "Otra...")
+    desafioInteres: "",
+    capacidadesDesafio: "",
   });
+
+  // Para manejar el input de "Otra..." temporalmente antes de la validación y envío
+  const [otraUnidadText, setOtraUnidadText] = useState("");
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,7 +58,13 @@ export default function AcademicosForm({ onSubmit }) {
     "Otra...",
   ];
 
+  const desafiosInteres = ["Desafío CMF", "Desafío NANOTC", "Desafío Abierto"];
+
   const handleInputChange = (field, value) => {
+    // Si cambia la unidad académica, reinicia el texto de "Otra..."
+    if (field === "unidadAcademica" && value !== "Otra...") {
+      setOtraUnidadText("");
+    }
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -59,17 +77,32 @@ export default function AcademicosForm({ onSubmit }) {
     }
   };
 
+  // Manejador específico para el input de texto de "Otra..."
+  const handleOtraUnidadTextChange = (value) => {
+    setOtraUnidadText(value);
+    // Limpia el error si el usuario empieza a escribir
+    if (errors.unidadAcademica && value.trim() !== "") {
+      setErrors((prev) => ({
+        ...prev,
+        unidadAcademica: "",
+      }));
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = [
-      "nombreApellido",
+      "nombre",
+      "apellido",
       "correoElectronico",
-      "unidadAcademica",
-      "capacidadesID",
+      "unidadAcademica", // Sigue siendo requerido
+      "desafioInteres",
+      "capacidadesDesafio",
     ];
 
     requiredFields.forEach((field) => {
-      if (!formData[field].trim()) {
+      // Para 'unidadAcademica', la validación inicial es que algo esté seleccionado
+      if (!formData[field] || formData[field].trim() === "") {
         newErrors[field] = "Este campo es obligatorio";
       }
     });
@@ -81,8 +114,10 @@ export default function AcademicosForm({ onSubmit }) {
       newErrors.correoElectronico = "Ingrese un correo electrónico válido";
     }
 
-    if (formData.unidadAcademica === "Otra..." && !formData.otraUnidad.trim()) {
-      newErrors.otraUnidad = "Por favor especifique la unidad académica";
+    // AHORA VALIDAMOS 'otraUnidadText' si 'unidadAcademica' es "Otra..."
+    // Y asignamos el error al campo 'unidadAcademica' para que aparezca correctamente
+    if (formData.unidadAcademica === "Otra..." && !otraUnidadText.trim()) {
+      newErrors.unidadAcademica = "Por favor especifique la unidad académica"; // Apuntamos el error a unidadAcademica
     }
 
     setErrors(newErrors);
@@ -91,31 +126,52 @@ export default function AcademicosForm({ onSubmit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitMessage({ type: "", text: "" }); // Limpiar mensajes anteriores
+    setSubmitMessage({ type: "", text: "" });
+
+    // Clonamos formData para hacer modificaciones antes de la validación final del cliente
+    let dataToSend = { ...formData };
+
+    // --- LÓGICA CLAVE: PRE-PROCESAMIENTO PARA EL BACKEND ---
+    if (dataToSend.unidadAcademica === "Otra...") {
+      // Si el usuario seleccionó "Otra...", usamos el texto que escribieron
+      dataToSend.unidadAcademica = otraUnidadText;
+    }
+    // No necesitamos el campo 'otraUnidad' en el 'dataToSend' ya que el backend no lo espera
+    // delete dataToSend.otraUnidad; // Ya fue removido del formData principal
+    // --- FIN LÓGICA CLAVE ---
+
+    // Validar el formulario con los datos pre-procesados
+    // NOTA: 'validateForm' ya considera 'otraUnidadText' en su lógica condicional
     if (!validateForm()) {
+      // Si la validación falla (ej. "Otra..." seleccionado pero campo de texto vacío),
+      // el 'errors' state ya tendrá los mensajes correctos.
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await postInscripcionAcademico(formData);
+      const response = await postInscripcionDesafio(dataToSend); // Enviamos los datos transformados
       setSubmitMessage({
         type: "success",
         text: response.message || "¡Inscripción enviada con éxito!",
       });
       // Limpiar el formulario después del éxito
       setFormData({
-        nombreApellido: "",
+        nombre: "",
+        apellido: "",
         correoElectronico: "",
         unidadAcademica: "",
-        otraUnidad: "",
-        capacidadesID: "",
-        acompanante: "",
+        desafioInteres: "",
+        capacidadesDesafio: "",
       });
-      // Opcional: Desaparecer el mensaje de éxito después de X segundos
-      setTimeout(() => setSubmitMessage({ type: "", text: "" }), 5000); // 5 segundos
+      setOtraUnidadText(""); // Limpiar también el estado del input "Otra..."
+      setTimeout(() => setSubmitMessage({ type: "", text: "" }), 5000);
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
+      // Asumimos que el backend envía 'error.details' para errores por campo
+      if (error.details) {
+        setErrors((prev) => ({ ...prev, ...error.details })); // Actualiza los errores específicos
+      }
       setSubmitMessage({
         type: "error",
         text: error.message || "Ocurrió un error al enviar la inscripción.",
@@ -125,7 +181,6 @@ export default function AcademicosForm({ onSubmit }) {
     }
   };
 
-  // Determinar el icono y el texto del botón
   const getButtonContent = () => {
     if (isSubmitting) {
       return (
@@ -161,6 +216,16 @@ export default function AcademicosForm({ onSubmit }) {
 
   return (
     <div className="bg-slate-100 py-8">
+      <Button
+        variant="outline"
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="text-gray-600 ml-6 cursor-pointer font-bold hover:text-gray-800"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Volver
+      </Button>
       <div className="max-w-4xl mx-auto px-6">
         <Card className="border-0 shadow-xl overflow-hidden">
           <div className="relative h-32 bg-gradient-to-r from-orange-500 via-blue-600 to-teal-600">
@@ -174,14 +239,13 @@ export default function AcademicosForm({ onSubmit }) {
                   variant="secondary"
                   className="bg-white/20 text-white border-white/30"
                 >
-                  Inscripción de Investigadores/as y Académicos/as PUCV
+                  Inscripción de Desafíos
                 </Badge>
               </div>
             </div>
           </div>
 
           <CardContent className="p-6">
-            {/* Mensajes de feedback */}
             {submitMessage.text && (
               <div
                 className={`p-4 mb-6 rounded-md ${
@@ -195,28 +259,47 @@ export default function AcademicosForm({ onSubmit }) {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Personal Information */}
+              {/* Name */}
               <div className="space-y-2">
                 <Label
-                  htmlFor="nombreApellido"
+                  htmlFor="nombre"
                   className="text-sm font-medium flex items-center gap-2"
                 >
                   <Users className="w-4 h-4" />
-                  Nombre y Apellido <span className="text-red-500">*</span>
+                  Nombre <span className="text-red-500">*</span>
                 </Label>
                 <Input
-                  id="nombreApellido"
-                  placeholder="Ingrese su nombre completo"
-                  value={formData.nombreApellido}
-                  onChange={(e) =>
-                    handleInputChange("nombreApellido", e.target.value)
-                  }
-                  className={errors.nombreApellido ? "border-red-500" : ""}
+                  id="nombre"
+                  placeholder="Ingrese su nombre"
+                  value={formData.nombre}
+                  onChange={(e) => handleInputChange("nombre", e.target.value)}
+                  className={errors.nombre ? "border-red-500" : ""}
                 />
-                {errors.nombreApellido && (
-                  <p className="text-red-500 text-xs">
-                    {errors.nombreApellido}
-                  </p>
+                {errors.nombre && (
+                  <p className="text-red-500 text-xs">{errors.nombre}</p>
+                )}
+              </div>
+
+              {/* Last Name */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="apellido"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Users className="w-4 h-4" />
+                  Apellido <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="apellido"
+                  placeholder="Ingrese su apellido"
+                  value={formData.apellido}
+                  onChange={(e) =>
+                    handleInputChange("apellido", e.target.value)
+                  }
+                  className={errors.apellido ? "border-red-500" : ""}
+                />
+                {errors.apellido && (
+                  <p className="text-red-500 text-xs">{errors.apellido}</p>
                 )}
               </div>
 
@@ -271,6 +354,7 @@ export default function AcademicosForm({ onSubmit }) {
                     </div>
                   ))}
                 </RadioGroup>
+                {/* Ahora el error de 'otraUnidad' se mapea a 'unidadAcademica' */}
                 {errors.unidadAcademica && (
                   <p className="text-red-500 text-xs">
                     {errors.unidadAcademica}
@@ -287,64 +371,75 @@ export default function AcademicosForm({ onSubmit }) {
                     <Input
                       id="otraUnidad"
                       placeholder="Ingrese el nombre de la unidad académica"
-                      value={formData.otraUnidad}
+                      value={otraUnidadText} // Usa el nuevo estado para este input
                       onChange={(e) =>
-                        handleInputChange("otraUnidad", e.target.value)
+                        handleOtraUnidadTextChange(e.target.value)
                       }
-                      className={errors.otraUnidad ? "border-red-500" : ""}
+                      // Aquí también apuntamos el error a 'unidadAcademica'
+                      className={errors.unidadAcademica ? "border-red-500" : ""}
                     />
-                    {errors.otraUnidad && (
-                      <p className="text-red-500 text-xs">
-                        {errors.otraUnidad}
-                      </p>
-                    )}
+                    {/* No necesitamos un p de error específico para 'otraUnidad' */}
                   </div>
                 )}
               </div>
 
-              {/* R&D Capabilities */}
+              {/* Desafíos de Interés */}
+              <div className="space-y-4">
+                <Label className="text-sm font-medium flex items-center gap-2">
+                  <ClipboardList className="w-4 h-4" />
+                  Desafío de interés <span className="text-red-500">*</span>
+                </Label>
+                <RadioGroup
+                  value={formData.desafioInteres}
+                  onValueChange={(value) =>
+                    handleInputChange("desafioInteres", value)
+                  }
+                  className="space-y-3"
+                >
+                  {desafiosInteres.map((desafio, index) => (
+                    <div key={index} className="flex items-center space-x-3">
+                      <RadioGroupItem value={desafio} id={`desafio-${index}`} />
+                      <Label
+                        htmlFor={`desafio-${index}`}
+                        className="text-sm font-normal cursor-pointer flex-1"
+                      >
+                        {desafio}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+                {errors.desafioInteres && (
+                  <p className="text-red-500 text-xs">
+                    {errors.desafioInteres}
+                  </p>
+                )}
+              </div>
+
+              {/* Capacidades para el Desafío */}
               <div className="space-y-2">
                 <Label
-                  htmlFor="capacidadesID"
+                  htmlFor="capacidadesDesafio"
                   className="text-sm font-medium flex items-center gap-2"
                 >
                   <Lightbulb className="w-4 h-4" />
-                  Describe tus capacidades de I+D aplicada en pocas palabras
-                  (Keywords) <span className="text-red-500">*</span>
+                  Describe tus capacidades para resolver el desafío{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
-                <p className="text-xs text-slate-600 mb-2">
-                  Ejemplos: Biotecnología, Nuevos materiales, impresión 3D,
-                  optimización, IA, etc...
-                </p>
+
                 <Textarea
-                  id="capacidadesID"
-                  placeholder="Ej: Machine Learning, Optimización de procesos, Energías renovables, Biotecnología aplicada, Materiales avanzados, Automatización industrial, Análisis de datos, Simulación computacional..."
-                  value={formData.capacidadesID}
+                  id="capacidadesDesafio"
+                  placeholder="Ej: Mi experiencia en Machine Learning me permite desarrollar modelos predictivos para el Desafío CMF..."
+                  value={formData.capacidadesDesafio}
                   onChange={(e) =>
-                    handleInputChange("capacidadesID", e.target.value)
+                    handleInputChange("capacidadesDesafio", e.target.value)
                   }
                   className="min-h-[120px]"
                 />
-              </div>
-
-              {/* Accompanying Person */}
-              <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-6 rounded-lg border border-blue-200">
-                <div className="space-y-2">
-                  <Label htmlFor="acompanante" className="text-sm font-medium">
-                    Si vienes con alguien más, puedes poner su nombre acá:
-                  </Label>
-                  <p className="text-xs text-slate-600 mb-2">
-                    (Máximo un acompañante adicional por académico/a)
+                {errors.capacidadesDesafio && (
+                  <p className="text-red-500 text-xs">
+                    {errors.capacidadesDesafio}
                   </p>
-                  <Input
-                    id="acompanante"
-                    placeholder="Nombre del acompañante (opcional)"
-                    value={formData.acompanante}
-                    onChange={(e) =>
-                      handleInputChange("acompanante", e.target.value)
-                    }
-                  />
-                </div>
+                )}
               </div>
 
               {/* Submit Button */}
@@ -352,10 +447,9 @@ export default function AcademicosForm({ onSubmit }) {
                 <Button
                   type="submit"
                   className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-3 text-lg"
-                  disabled={isSubmitting || submitMessage.type === "success"} // Deshabilitar después del éxito también
+                  disabled={isSubmitting || submitMessage.type === "success"}
                 >
-                  {getButtonContent()}{" "}
-                  {/* Usamos la función para el contenido del botón */}
+                  {getButtonContent()}
                 </Button>
               </div>
             </form>
