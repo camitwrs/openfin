@@ -456,6 +456,11 @@ export default function DesafiosForm() {
                 >
                   {getButtonContent()}
                 </Button>
+                {submitMessage.type === "success" && (
+                  <p className="text-green-600 text-sm font-semibold mt-2 text-center">
+                    La inscripción ha sido enviada con éxito.
+                  </p>
+                )}
               </div>
             </form>
           </CardContent>

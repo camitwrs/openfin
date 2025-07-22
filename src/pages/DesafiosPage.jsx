@@ -177,6 +177,9 @@ export default function DesafiosPage() {
     navigate("/desafios-inscripcion");
   };
 
+  const BASES_CONCURSO_PDF_URL =
+    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv.pdf";
+
   return (
     <div className="bg-slate-50 py-16">
       <div className="relative overflow-hidden">
@@ -439,7 +442,7 @@ export default function DesafiosPage() {
                         Académicos, profesionales y estudiantes de la PUCV. Ver
                         más detalle en{" "}
                         <a
-                          href="TU_LINK_EXTERNO_AQUI" // ¡REEMPLAZA ESTO CON LA URL REAL!
+                          href={BASES_CONCURSO_PDF_URL} // ¡REEMPLAZA ESTO CON LA URL REAL!
                           target="_blank" // Abre el enlace en una nueva pestaña
                           rel="noopener noreferrer" // Mejora la seguridad al abrir nuevas pestañas
                           className="text-sky-600 hover:underline font-semibold"
@@ -452,9 +455,14 @@ export default function DesafiosPage() {
                   </li>
                 </ol>
               </div>
-              <Button className="cursor-pointer font-bold px-6 py-6 rounded-md shadow-md transition-colors text-lg uppercase bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:scale-102 border-2 text-white">
-                Bases del Concurso
-              </Button>
+              <a
+                href={BASES_CONCURSO_PDF_URL} // <-- La URL relativa ahora apunta al PDF en 'public'
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer font-bold px-6 py-4 rounded-md shadow-md transition-colors text-lg uppercase bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:scale-102 border-2 text-white flex items-center justify-center text-center"
+              >
+                BASES DEL CONCURSO
+              </a>
             </div>
             {/* Proceso de postulación - Cronograma */}
             <div className="mb-12">
@@ -465,8 +473,8 @@ export default function DesafiosPage() {
               <div className="space-y-4 text-sky-800 text-lg leading-relaxed mb-8">
                 <p>
                   <span className="font-bold ">1) Inscripciones</span> (hasta el
-                  25 de Julio de 2025): Para participar solo debes inscribirte para
-                  mostrar tu interés en uno o varios desafíos, aún no es
+                  25 de Julio de 2025): Para participar solo debes inscribirte
+                  para mostrar tu interés en uno o varios desafíos, aún no es
                   necesario que tengas un equipo o proyecto.
                 </p>
                 <p>
@@ -478,8 +486,9 @@ export default function DesafiosPage() {
                 </p>
                 <p>
                   <span className="font-bold">3) Postulación</span> (hasta el
-                  Martes 5 de Agosto de 2025): Los proyectos podrán postular llenando el
-                  formulario de postulación que estará disponible en este sitio.
+                  15 de Agosto de 2025): Los proyectos podrán postular
+                  llenando el formulario de postulación que estará disponible en
+                  este sitio.
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
