@@ -178,7 +178,7 @@ export default function DesafiosPage() {
   };
 
   const BASES_CONCURSO_PDF_URL =
-    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv.pdf";
+    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv-2025-v1.pdf";
 
   return (
     <div className="bg-slate-50 py-16">
@@ -485,10 +485,9 @@ export default function DesafiosPage() {
                   proyecto.
                 </p>
                 <p>
-                  <span className="font-bold">3) Postulación</span> (hasta el
-                  15 de Agosto de 2025): Los proyectos podrán postular
-                  llenando el formulario de postulación que estará disponible en
-                  este sitio.
+                  <span className="font-bold">3) Postulación</span> (hasta el 15
+                  de Agosto de 2025): Los proyectos podrán postular llenando el
+                  formulario de postulación que estará disponible en este sitio.
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
