@@ -3,6 +3,7 @@
 
 import { Users, DollarSign, Handshake, ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 // Tus imágenes existentes para las cards
@@ -22,7 +23,7 @@ import cmfDetalleLogo from "../assets/cmf-morado.png";
 import nanoDetalleLogo from "../assets/nano-small.png";
 import matchupDetalleLogo from "../assets/matchup-azul-recortado.png";
 
-import FI3HeaderBackground from "../assets/matchup-personas.png";
+import FI3_image from "../assets/imagen_fondo_concursable.png";
 
 import { useRef } from "react"; // <--- Importar useRef
 
@@ -188,7 +189,7 @@ export default function DesafiosPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-center lg:items-start text-center lg:text-left">
             <div className="mb-8 lg:mb-0 lg:col-span-2">
               <h1 className="text-4xl md:text-5xl lg:text-4xl font-extrabold text-sky-900 mb-4 leading-tight">
-                Concurso Desafíos de Ingeniería PUCV
+                Desafíos de Ingeniería PUCV
               </h1>
               <div className="w-24 h-0.5 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-full mx-auto lg:mx-0 mb-6"></div>{" "}
               <p className="text-lg lg:text-xl text-slate-600 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
@@ -200,173 +201,185 @@ export default function DesafiosPage() {
             </div>
             <div className="flex flex-col items-center lg:items-end lg:text-right justify-center gap-4 lg:col-span-1">
               <p className="text-lg md:text-xl font-extrabold mt-2 text-sky-900">
-                ¿Eres académico/a y te interesa participar?
+                ¿Eres académico/a y te interesan los desafíos con la industria?
               </p>
               <Button
                 onClick={handleInscripcionDesafioClick}
                 className="bg-gradient-to-r cursor-pointer from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg uppercase w-full sm:w-auto"
               >
-                Inscríbete al desafío
+                PARTICIPA
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
           </div>
 
-          {/* Services Grid (cards superiores) */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
-            {services.map((service, index) => {
-              return (
-                <Card
-                  key={index}
-                  className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-0 overflow-hidden bg-white"
-                  onClick={() => handleServiceClick(service.id)} // Pasa el ID del servicio
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0"
-                    />
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-80 group-hover:opacity-80 transition-opacity duration-300 z-10`}
-                    ></div>
-                    {service.secondaryLogo && (
+          <div className="mb-16">
+            <h2 className="text-2xl font-bold text-sky-900 mb-8">
+              Concursos activos
+            </h2>
+            {/* Services Grid (cards superiores) */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+              {services.map((service, index) => {
+                return (
+                  <Card
+                    key={index}
+                    className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-0 overflow-hidden bg-white"
+                    onClick={() => handleServiceClick(service.id)} // Pasa el ID del servicio
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <Badge
+                        variant="default"
+                        className="absolute bottom-12 left-3 z-30 bg-blue-600 text-white hover:bg-blue-700"
+                      >
+                        Concurso
+                      </Badge>
                       <img
-                        src={service.secondaryLogo}
-                        alt={`${service.title} Logo`}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-20 object-contain z-20"
+                        src={service.image}
+                        alt={service.title}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0"
                       />
-                    )}
-                    <div className="absolute bottom-4 left-4 z-30">
-                      <h3 className="text-2xl font-bold text-white tracking-wide">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <CardContent className="p-4">
-                    <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                      {service.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sky-600 group-hover:text-sky-700 font-semibold transition-colors text-sm">
-                        <span className="mr-1.5 font-bold">Explorar</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-t ${service.gradient} opacity-80 group-hover:opacity-80 transition-opacity duration-300 z-10`}
+                      ></div>
+                      {service.secondaryLogo && (
+                        <img
+                          src={service.secondaryLogo}
+                          alt={`${service.title} Logo`}
+                          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-20 object-contain z-20"
+                        />
+                      )}
+                      <div className="absolute bottom-4 left-4 z-30">
+                        <h3 className="text-2xl font-bold text-white tracking-wide">
+                          {service.title}
+                        </h3>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                    <CardContent className="p-4">
+                      <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                        {service.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sky-600 group-hover:text-sky-700 font-semibold transition-colors text-sm">
+                          <span className="mr-1.5 font-bold">Explorar</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* --- SECCIÓN DE DETALLE DE DESAFÍOS (GENERADA DINÁMICAMENTE) --- */}
+            {/* Mapea los servicios que tienen 'details' */}
+            {services.map(
+              (service) =>
+                service.details && ( // Solo renderiza esta sección si service.details existe
+                  <div
+                    key={service.id}
+                    ref={refs[service.id]}
+                    className="max-w-7xl mx-auto px-8 py-8 bg-white shadow-md rounded-lg mb-16"
+                  >
+                    {/* Encabezado del Desafío de detalle */}
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+                      <div className="bg-[#3D82EB] text-white px-4 py-2 rounded-md font-extrabold text-xl mb-4 md:mb-0">
+                        {service.title}
+                      </div>
+                      {service.details.logo && (
+                        <img
+                          src={service.details.logo}
+                          alt={`${service.title} Logo`}
+                          className="h-12"
+                        />
+                      )}
+                    </div>
+
+                    {/* Contenido principal: Contexto y Reporte/Industrias (GRID) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                      {/* Contexto */}
+                      <div
+                        // Aplica col-span-full si NO existe ni report ni applicationIndustry
+                        className={
+                          !service.details.report &&
+                          !service.details.applicationIndustry
+                            ? "md:col-span-full" // Ocupa las 2 columnas si no hay sección a la derecha
+                            : ""
+                        }
+                      >
+                        <h2 className="text-xl font-extrabold text-[#3D82EB] mb-2">
+                          {service.details.context.title}
+                        </h2>
+                        <p className="text-sky-800 leading-relaxed">
+                          {service.details.context.description}
+                        </p>
+                      </div>
+                      {/* Reporte de las empresas / Industrias de aplicación (Condicional) */}
+                      <div>
+                        <h2 className="text-xl font-extrabold text-[#3D82EB] mb-2">
+                          {service.details.report?.title ||
+                            service.details.applicationIndustry?.title}
+                        </h2>
+                        {service.details.report && ( // Si tiene 'report' (para CMF)
+                          <ol className="list-decimal list-inside text-sky-800 leading-relaxed">
+                            {service.details.report.items.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ol>
+                        )}
+                        {service.details.applicationIndustry && ( // Si tiene 'applicationIndustry' (para Nano TC)
+                          <div className="grid grid-cols-2 gap-x-8 text-sky-800 leading-relaxed">
+                            {service.details.applicationIndustry.columns.map(
+                              (column, colIndex) => (
+                                <ul
+                                  key={colIndex}
+                                  className="list-disc list-inside"
+                                >
+                                  {column.map((item, i) => (
+                                    <li key={i}>{item}</li>
+                                  ))}
+                                </ul>
+                              )
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Desafíos para la CMF / Main Challenge (Condicional) */}
+                    {service.details.mainChallenge && (
+                      <div className="mb-8">
+                        <h2 className="text-xl font-extrabold text-[#3D82EB] mb-4">
+                          {service.details.mainChallenge.title}
+                        </h2>
+                        <p className="text-sky-600 text-md font-bold leading-relaxed">
+                          {service.details.mainChallenge.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Desafíos Específicos (Desafío 1, 2, 3) - Mapea desde el array specificChallenges */}
+                    <div className="space-y-6">
+                      {service.details.specificChallenges.map(
+                        (challenge, index) => (
+                          <div
+                            key={index}
+                            className="bg-blue-50 px-6 py-4 rounded-lg"
+                          >
+                            <h3 className="text-md font-extrabold text-[#3D82EB] mb-2">
+                              {challenge.title}
+                            </h3>
+                            <p className="text-sky-800 text-sm leading-relaxed">
+                              {challenge.objective}
+                            </p>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                )
+            )}
           </div>
 
-          {/* --- SECCIÓN DE DETALLE DE DESAFÍOS (GENERADA DINÁMICAMENTE) --- */}
-          {/* Mapea los servicios que tienen 'details' */}
-          {services.map(
-            (service) =>
-              service.details && ( // Solo renderiza esta sección si service.details existe
-                <div
-                  key={service.id}
-                  ref={refs[service.id]}
-                  className="max-w-7xl mx-auto px-8 py-8 bg-white shadow-md rounded-lg mb-16"
-                >
-                  {/* Encabezado del Desafío de detalle */}
-                  <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <div className="bg-[#3D82EB] text-white px-4 py-2 rounded-md font-extrabold text-xl mb-4 md:mb-0">
-                      {service.title}
-                    </div>
-                    {service.details.logo && (
-                      <img
-                        src={service.details.logo}
-                        alt={`${service.title} Logo`}
-                        className="h-12"
-                      />
-                    )}
-                  </div>
-
-                  {/* Contenido principal: Contexto y Reporte/Industrias (GRID) */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                    {/* Contexto */}
-                    <div
-                      // Aplica col-span-full si NO existe ni report ni applicationIndustry
-                      className={
-                        !service.details.report &&
-                        !service.details.applicationIndustry
-                          ? "md:col-span-full" // Ocupa las 2 columnas si no hay sección a la derecha
-                          : ""
-                      }
-                    >
-                      <h2 className="text-xl font-extrabold text-[#3D82EB] mb-2">
-                        {service.details.context.title}
-                      </h2>
-                      <p className="text-sky-800 leading-relaxed">
-                        {service.details.context.description}
-                      </p>
-                    </div>
-                    {/* Reporte de las empresas / Industrias de aplicación (Condicional) */}
-                    <div>
-                      <h2 className="text-xl font-extrabold text-[#3D82EB] mb-2">
-                        {service.details.report?.title ||
-                          service.details.applicationIndustry?.title}
-                      </h2>
-                      {service.details.report && ( // Si tiene 'report' (para CMF)
-                        <ol className="list-decimal list-inside text-sky-800 leading-relaxed">
-                          {service.details.report.items.map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ol>
-                      )}
-                      {service.details.applicationIndustry && ( // Si tiene 'applicationIndustry' (para Nano TC)
-                        <div className="grid grid-cols-2 gap-x-8 text-sky-800 leading-relaxed">
-                          {service.details.applicationIndustry.columns.map(
-                            (column, colIndex) => (
-                              <ul
-                                key={colIndex}
-                                className="list-disc list-inside"
-                              >
-                                {column.map((item, i) => (
-                                  <li key={i}>{item}</li>
-                                ))}
-                              </ul>
-                            )
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Desafíos para la CMF / Main Challenge (Condicional) */}
-                  {service.details.mainChallenge && (
-                    <div className="mb-8">
-                      <h2 className="text-xl font-extrabold text-[#3D82EB] mb-4">
-                        {service.details.mainChallenge.title}
-                      </h2>
-                      <p className="text-sky-600 text-md font-bold leading-relaxed">
-                        {service.details.mainChallenge.description}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Desafíos Específicos (Desafío 1, 2, 3) - Mapea desde el array specificChallenges */}
-                  <div className="space-y-6">
-                    {service.details.specificChallenges.map(
-                      (challenge, index) => (
-                        <div
-                          key={index}
-                          className="bg-blue-50 px-6 py-4 rounded-lg"
-                        >
-                          <h3 className="text-md font-extrabold text-[#3D82EB] mb-2">
-                            {challenge.title}
-                          </h3>
-                          <p className="text-sky-800 text-sm leading-relaxed">
-                            {challenge.objective}
-                          </p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              )
-          )}
           {/* FIN SECCIÓN DE DETALLE DINÁMICA */}
           <div className="bg-white p-8 rounded-lg shadow-md mb-16">
             {" "}
@@ -377,7 +390,7 @@ export default function DesafiosPage() {
               <div
                 className="absolute inset-0 w-full h-full object-cover rounded-lg opacity-30"
                 style={{
-                  backgroundImage: `url(${FI3HeaderBackground})`,
+                  backgroundImage: `url(${FI3_image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -416,14 +429,34 @@ export default function DesafiosPage() {
                   <li>
                     Desafío Abierto: Para desafíos con cualquier empresa u
                     organización.
+                    <div className="ml-6 mt-4 border-l-4 border-sky-500 pl-4">
+                      {" "}
+                      {/* Añade un poco de indentación y una línea lateral */}
+                      <h4 className="text-md font-bold text-sky-600 mb-2">
+                        Postulantes
+                      </h4>
+                      <p className="text-slate-700 text-base">
+                        Académicos, profesionales y estudiantes de la PUCV. Ver
+                        más detalle en{" "}
+                        <a
+                          href="TU_LINK_EXTERNO_AQUI" // ¡REEMPLAZA ESTO CON LA URL REAL!
+                          target="_blank" // Abre el enlace en una nueva pestaña
+                          rel="noopener noreferrer" // Mejora la seguridad al abrir nuevas pestañas
+                          className="text-sky-600 hover:underline font-semibold"
+                        >
+                          bases concursables
+                        </a>
+                        .
+                      </p>
+                    </div>
                   </li>
                 </ol>
               </div>
-              <Button className="bg-[#3D82EB] hover:bg-[#3D82EB] text-white font-bold px-6 py-6 rounded-md shadow-md transition-colors text-lg uppercase">
+              <Button className="cursor-pointer font-bold px-6 py-6 rounded-md shadow-md transition-colors text-lg uppercase bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:scale-102 border-2 text-white">
                 Bases del Concurso
               </Button>
             </div>
-            {/* Profceso de postulación - Cronograma */}
+            {/* Proceso de postulación - Cronograma */}
             <div className="mb-12">
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-6">
                 Proceso de postulación
@@ -432,7 +465,7 @@ export default function DesafiosPage() {
               <div className="space-y-4 text-sky-800 text-lg leading-relaxed mb-8">
                 <p>
                   <span className="font-bold ">1) Inscripciones</span> (hasta el
-                  25 de Julio): Para participar solo debes inscribirte para
+                  25 de Julio de 2025): Para participar solo debes inscribirte para
                   mostrar tu interés en uno o varios desafíos, aún no es
                   necesario que tengas un equipo o proyecto.
                 </p>
@@ -445,12 +478,12 @@ export default function DesafiosPage() {
                 </p>
                 <p>
                   <span className="font-bold">3) Postulación</span> (hasta el
-                  Martes 5 de Agosto): Los proyectos podrán postular llenando el
+                  Martes 5 de Agosto de 2025): Los proyectos podrán postular llenando el
                   formulario de postulación que estará disponible en este sitio.
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
-                  resultados se comunicarán el Viernes 15 de Agosto.
+                  resultados se comunicarán el Viernes 15 de Agosto de 2025.
                 </p>
               </div>
 

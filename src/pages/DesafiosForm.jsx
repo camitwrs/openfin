@@ -4,42 +4,39 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox"; // <-- Importa Checkbox
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import {
   Mail,
   Building2,
   Users,
-  Lightbulb,
   Loader2, // Spinner icon
   CheckCircle, // Success icon
   XCircle, // Error icon
   Send, // Normal send icon
   ClipboardList, // Icon for challenges
   ArrowLeft,
+  // Lightbulb ya no se usa para capacidadesDesafio
 } from "lucide-react";
 
-import { postInscripcionDesafio } from "../api/desafios.js";
+import { postInscripcionDesafio } from "../api/desafios.js"; // Asegúrate de que este endpoint maneje un array para desafiosInteres
 
 export default function DesafiosForm() {
   useLayoutEffect(() => {
-    // Scroll al principio de la página cuando el componente se monta
-    // useLayoutEffect es preferible aquí para que el scroll ocurra antes del renderizado del navegador
     window.scrollTo(0, 0);
-  }, []); // El array de dependencias
+  }, []);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
     correoElectronico: "",
-    unidadAcademica: "", // Ahora contendrá el valor final (directo o de "Otra...")
-    desafioInteres: "",
-    capacidadesDesafio: "",
+    unidadAcademica: "", // Contendrá el valor final (directo o de "Otra...")
+    desafioInteres: [], // <-- AHORA ES UN ARRAY para selección múltiple
+    // capacidadesDesafio: "", // <-- CAMPO ELIMINADO
   });
 
-  // Para manejar el input de "Otra..." temporalmente antes de la validación y envío
   const [otraUnidadText, setOtraUnidadText] = useState("");
 
   const [errors, setErrors] = useState({});
@@ -58,17 +55,53 @@ export default function DesafiosForm() {
     "Otra...",
   ];
 
-  const desafiosInteres = ["Desafío CMF", "Desafío NANOTC", "Desafío Abierto"];
+  const desafiosOptions = [
+    // Cambiado a 'desafiosOptions' para mayor claridad
+    "Desafío CMF",
+    "Desafío NANOTC",
+    "Desafío Abierto (Otro desafío en colaboración con la industria)",
+  ];
 
+  // Modificado handleInputChange para gestionar checkboxes (desafiosInteres) y otros campos
   const handleInputChange = (field, value) => {
-    // Si cambia la unidad académica, reinicia el texto de "Otra..."
-    if (field === "unidadAcademica" && value !== "Otra...") {
-      setOtraUnidadText("");
+    // Lógica para el RadioGroup de unidadesAcademicas
+    if (field === "unidadAcademica") {
+      if (value !== "Otra...") {
+        setOtraUnidadText(""); // Limpiar si cambia de "Otra..."
+      }
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
     }
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    // Lógica para Checkboxes de desafiosInteres
+    else if (field === "desafioInteres") {
+      setFormData((prev) => {
+        const currentDesafios = prev.desafioInteres;
+        if (currentDesafios.includes(value)) {
+          // Si ya está, lo quita
+          return {
+            ...prev,
+            desafioInteres: currentDesafios.filter((d) => d !== value),
+          };
+        } else {
+          // Si no está, lo añade
+          return {
+            ...prev,
+            desafioInteres: [...currentDesafios, value],
+          };
+        }
+      });
+    }
+    // Lógica para otros campos (nombre, apellido, correoElectronico)
+    else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
+
+    // Limpiar errores relevantes si el campo se está modificando
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,
@@ -77,10 +110,8 @@ export default function DesafiosForm() {
     }
   };
 
-  // Manejador específico para el input de texto de "Otra..."
   const handleOtraUnidadTextChange = (value) => {
     setOtraUnidadText(value);
-    // Limpia el error si el usuario empieza a escribir
     if (errors.unidadAcademica && value.trim() !== "") {
       setErrors((prev) => ({
         ...prev,
@@ -95,17 +126,22 @@ export default function DesafiosForm() {
       "nombre",
       "apellido",
       "correoElectronico",
-      "unidadAcademica", // Sigue siendo requerido
-      "desafioInteres",
-      "capacidadesDesafio",
+      "unidadAcademica",
+      // "capacidadesDesafio" ya no es campo requerido del frontend
     ];
 
     requiredFields.forEach((field) => {
-      // Para 'unidadAcademica', la validación inicial es que algo esté seleccionado
-      if (!formData[field] || formData[field].trim() === "") {
+      // Validación general para campos de texto/RadioGroup
+      if (typeof formData[field] === "string" && !formData[field].trim()) {
         newErrors[field] = "Este campo es obligatorio";
       }
     });
+
+    // Validación específica para el array de desafíos
+    if (formData.desafioInteres.length === 0) {
+      // Verifica si el array está vacío
+      newErrors.desafioInteres = "Debe seleccionar al menos un desafío";
+    }
 
     if (
       formData.correoElectronico &&
@@ -114,10 +150,8 @@ export default function DesafiosForm() {
       newErrors.correoElectronico = "Ingrese un correo electrónico válido";
     }
 
-    // AHORA VALIDAMOS 'otraUnidadText' si 'unidadAcademica' es "Otra..."
-    // Y asignamos el error al campo 'unidadAcademica' para que aparezca correctamente
     if (formData.unidadAcademica === "Otra..." && !otraUnidadText.trim()) {
-      newErrors.unidadAcademica = "Por favor especifique la unidad académica"; // Apuntamos el error a unidadAcademica
+      newErrors.unidadAcademica = "Por favor especifique la unidad académica";
     }
 
     setErrors(newErrors);
@@ -128,29 +162,28 @@ export default function DesafiosForm() {
     e.preventDefault();
     setSubmitMessage({ type: "", text: "" });
 
-    // Clonamos formData para hacer modificaciones antes de la validación final del cliente
-    let dataToSend = { ...formData };
-
-    // --- LÓGICA CLAVE: PRE-PROCESAMIENTO PARA EL BACKEND ---
-    if (dataToSend.unidadAcademica === "Otra...") {
-      // Si el usuario seleccionó "Otra...", usamos el texto que escribieron
-      dataToSend.unidadAcademica = otraUnidadText;
-    }
-    // No necesitamos el campo 'otraUnidad' en el 'dataToSend' ya que el backend no lo espera
-    // delete dataToSend.otraUnidad; // Ya fue removido del formData principal
-    // --- FIN LÓGICA CLAVE ---
-
-    // Validar el formulario con los datos pre-procesados
-    // NOTA: 'validateForm' ya considera 'otraUnidadText' en su lógica condicional
+    // Validar el formulario primero
     if (!validateForm()) {
-      // Si la validación falla (ej. "Otra..." seleccionado pero campo de texto vacío),
-      // el 'errors' state ya tendrá los mensajes correctos.
       return;
     }
 
+    // Clonamos formData para hacer modificaciones antes de enviar al backend
+    let dataToSend = { ...formData };
+
+    // Lógica para pre-procesar 'unidadAcademica'
+    if (dataToSend.unidadAcademica === "Otra...") {
+      dataToSend.unidadAcademica = otraUnidadText;
+    }
+
+    // Eliminar 'otraUnidadText' si no es parte del esquema del backend
+    // No lo enviaremos al backend ya que no es parte del modelo final.
+    // Aunque no está en formData, si lo tuvieras ahí lo eliminarías aquí.
+    // delete dataToSend.otraUnidad; // Esta línea ya no es necesaria si 'otraUnidad' se eliminó de formData.
+
     setIsSubmitting(true);
     try {
-      const response = await postInscripcionDesafio(dataToSend); // Enviamos los datos transformados
+      console.log("Datos enviados al backend:", dataToSend); // Para depuración
+      const response = await postInscripcionDesafio(dataToSend);
       setSubmitMessage({
         type: "success",
         text: response.message || "¡Inscripción enviada con éxito!",
@@ -161,16 +194,15 @@ export default function DesafiosForm() {
         apellido: "",
         correoElectronico: "",
         unidadAcademica: "",
-        desafioInteres: "",
-        capacidadesDesafio: "",
+        desafioInteres: [], // Limpiar como un array vacío
+        // capacidadesDesafio: "", // Ya no existe
       });
       setOtraUnidadText(""); // Limpiar también el estado del input "Otra..."
       setTimeout(() => setSubmitMessage({ type: "", text: "" }), 5000);
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      // Asumimos que el backend envía 'error.details' para errores por campo
       if (error.details) {
-        setErrors((prev) => ({ ...prev, ...error.details })); // Actualiza los errores específicos
+        setErrors((prev) => ({ ...prev, ...error.details }));
       }
       setSubmitMessage({
         type: "error",
@@ -228,19 +260,17 @@ export default function DesafiosForm() {
       </Button>
       <div className="max-w-4xl mx-auto px-6">
         <Card className="border-0 shadow-xl overflow-hidden">
-          <div className="relative h-32 bg-gradient-to-r from-orange-500 via-blue-600 to-teal-600">
+          <div className="relative h-32 bg-gradient-to-r from-blue-600 to-cyan-400">
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="relative h-full flex items-center justify-center">
               <div className="text-center text-white">
                 <h1 className="text-3xl font-bold mb-2">
                   Formulario de Inscripción
                 </h1>
-                <Badge
-                  variant="secondary"
-                  className="bg-white/20 text-white border-white/30"
-                >
-                  Inscripción de Desafíos
-                </Badge>
+                <p className="text-sm md:text-sm text-gray-100 mt-2 mx-auto max-w-2xl">
+                  ¿Te interesa participar? Inscríbete aquí para contactarte y
+                  conocer más sobre los desafíos.
+                </p>
               </div>
             </div>
           </div>
@@ -329,7 +359,7 @@ export default function DesafiosForm() {
                 )}
               </div>
 
-              {/* Academic Unit */}
+              {/* Academic Unit (RadioGroup) */}
               <div className="space-y-4">
                 <Label className="text-sm font-medium flex items-center gap-2">
                   <Building2 className="w-4 h-4" />
@@ -354,7 +384,6 @@ export default function DesafiosForm() {
                     </div>
                   ))}
                 </RadioGroup>
-                {/* Ahora el error de 'otraUnidad' se mapea a 'unidadAcademica' */}
                 {errors.unidadAcademica && (
                   <p className="text-red-500 text-xs">
                     {errors.unidadAcademica}
@@ -371,73 +400,49 @@ export default function DesafiosForm() {
                     <Input
                       id="otraUnidad"
                       placeholder="Ingrese el nombre de la unidad académica"
-                      value={otraUnidadText} // Usa el nuevo estado para este input
+                      value={otraUnidadText}
                       onChange={(e) =>
                         handleOtraUnidadTextChange(e.target.value)
                       }
-                      // Aquí también apuntamos el error a 'unidadAcademica'
                       className={errors.unidadAcademica ? "border-red-500" : ""}
                     />
-                    {/* No necesitamos un p de error específico para 'otraUnidad' */}
                   </div>
                 )}
               </div>
 
-              {/* Desafíos de Interés */}
+              {/* Desafíos de Interés (Checkboxes) */}
               <div className="space-y-4">
                 <Label className="text-sm font-medium flex items-center gap-2">
                   <ClipboardList className="w-4 h-4" />
-                  Desafío de interés <span className="text-red-500">*</span>
+                  Desafío(s) de interés (puede escoger uno o más){" "}
+                  <span className="text-red-500">*</span>
                 </Label>
-                <RadioGroup
-                  value={formData.desafioInteres}
-                  onValueChange={(value) =>
-                    handleInputChange("desafioInteres", value)
-                  }
-                  className="space-y-3"
-                >
-                  {desafiosInteres.map((desafio, index) => (
+                <div className="space-y-3">
+                  {desafiosOptions.map((desafio, index) => (
                     <div key={index} className="flex items-center space-x-3">
-                      <RadioGroupItem value={desafio} id={`desafio-${index}`} />
+                      <Checkbox
+                        id={`desafio-checkbox-${index}`}
+                        checked={formData.desafioInteres.includes(desafio)}
+                        onCheckedChange={(checked) =>
+                          handleInputChange(
+                            "desafioInteres",
+                            desafio, // Pasa el valor del desafío
+                            checked // Pasa si está chequeado o no
+                          )
+                        }
+                      />
                       <Label
-                        htmlFor={`desafio-${index}`}
+                        htmlFor={`desafio-checkbox-${index}`}
                         className="text-sm font-normal cursor-pointer flex-1"
                       >
                         {desafio}
                       </Label>
                     </div>
                   ))}
-                </RadioGroup>
+                </div>
                 {errors.desafioInteres && (
                   <p className="text-red-500 text-xs">
                     {errors.desafioInteres}
-                  </p>
-                )}
-              </div>
-
-              {/* Capacidades para el Desafío */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="capacidadesDesafio"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  <Lightbulb className="w-4 h-4" />
-                  Describe tus capacidades para resolver el desafío{" "}
-                  <span className="text-red-500">*</span>
-                </Label>
-
-                <Textarea
-                  id="capacidadesDesafio"
-                  placeholder="Ej: Mi experiencia en Machine Learning me permite desarrollar modelos predictivos para el Desafío CMF..."
-                  value={formData.capacidadesDesafio}
-                  onChange={(e) =>
-                    handleInputChange("capacidadesDesafio", e.target.value)
-                  }
-                  className="min-h-[120px]"
-                />
-                {errors.capacidadesDesafio && (
-                  <p className="text-red-500 text-xs">
-                    {errors.capacidadesDesafio}
                   </p>
                 )}
               </div>

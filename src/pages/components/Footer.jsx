@@ -1,11 +1,11 @@
 // src/components/Footer.jsx
-import React from "react"; // Necesario para componentes de React
-// import pucvlogo from "../../assets/pucv.gif"; // Asegúrate de las rutas correctas
+import React from "react";
+// import pucvlogo from "../../assets/pucv.gif";
 // import anidlogo from "../../assets/anid.png";
-// import finLogo from "../../assets/FINCOLOR.png"; // Asumo que este es el logo de la Facultad de Ingeniería o similar
+// import finLogo from "../../assets/FINCOLOR.png";
 // import otlLogo from "../../assets/logo_OTL.png";
 // import inesLogo from "../../assets/ines.png";
-// import vicerrectoriaLogo from "../../assets/vicerrectoria.svg"; // Si tienes este o lo omitiste, ajusta
+// import vicerrectoriaLogo from "../../assets/vicerrectoria.svg";
 
 // Logos para la sección "Organiza"
 import organizaPUCV from "../../assets/logo-fin.png"; // LOGO PUCV y Facultad de Ingeniería
@@ -22,7 +22,7 @@ import apoyaINES from "../../assets/ines-blanco.png"; // LOGO INES+D
 import apoyaANID from "../../assets/anid-blanco.png"; // LOGO ANID
 
 function Footer() {
-  // Define tus grupos de logos con sus imágenes
+  // Define tus grupos de logos con sus imágenes Y AHORA SUS LINKS
   const sections = [
     {
       title: "Organiza",
@@ -30,27 +30,51 @@ function Footer() {
         {
           src: organizaPUCV,
           alt: "Logo Pontificia Universidad Católica de Valparaíso",
+          href: "https://www.ingenieria.pucv.cl/", // <-- LINK AQUI
         },
-        { src: organizaK2I, alt: "Logo Knowledge to Industry Group" },
+        {
+          src: organizaK2I,
+          alt: "Logo Knowledge to Industry Group",
+        },
         {
           src: organizaCII,
           alt: "Logo Centro Interdisciplinario de Ingeniería",
+          href: "https://gargar-gmn4.vercel.app/", // <-- LINK AQUI
         },
       ],
     },
     {
       title: "Colabora",
       logos: [
-        { src: colaboraNano, alt: "Logo Nano TC" },
-        { src: colaboraCMF, alt: "Logo CMF" },
+        {
+          src: colaboraNano,
+          alt: "Logo Nano TC",
+          href: "https://nanotc.cl/password", // <-- LINK AQUI
+        },
+        {
+          src: colaboraCMF,
+          alt: "Logo CMF",
+          href: "https://www.cmfchile.cl/portal/principal/613/w3-channel.html", // <-- LINK AQUI
+        },
       ],
     },
     {
       title: "Apoya",
       logos: [
-        { src: apoyaOTL, alt: "Logo OTL" },
-        { src: apoyaINES, alt: "Logo InES I+D PUCV" },
-        { src: apoyaANID, alt: "Logo ANID" },
+        {
+          src: apoyaOTL,
+          alt: "Logo OTL",
+          href: "https://www.pucv.cl/uuaa/site/edic/base/port/otl.html", // <-- LINK AQUI
+        },
+        {
+          src: apoyaINES,
+          alt: "Logo InES I+D PUCV",
+        },
+        {
+          src: apoyaANID,
+          alt: "Logo ANID",
+          href: "https://anid.cl/", // <-- LINK AQUI
+        },
       ],
     },
   ];
@@ -62,43 +86,44 @@ function Footer() {
       <div className="relative z-10 max-w-7xl mx-auto">
         {sections.map((section, sectionIndex) => (
           <div key={sectionIndex} className="mb-8 last:mb-0">
-            {" "}
-            {/* Reducido mb-12 a mb-8 */}
             <h3 className="text-xl md:text-lg font-bold mb-6">
               {section.title}
-            </h3>{" "}
-            {/* Título de la sección */}
-            {/*
-              --- AJUSTE CLAVE AQUÍ: LÓGICA DE GRILLA RESPONSIVA Y CENTRADO ---
-              Aplicamos diferentes configuraciones de grilla basadas en el número de logos
-              y el tamaño de la pantalla, para que se vea como en tu esquema.
-              Para PC (lg: y xl:), la grilla se adaptará para centrar los logos.
-            */}
+            </h3>
             <div className="flex justify-center">
-              {" "}
-              {/* Contenedor flex para centrar la grilla completa */}
               <div
                 className={`grid gap-y-4 gap-x-10 items-center justify-items-center ${
-                  // Por defecto, 2 columnas en móvil
-                  // En sm: 3 columnas
-                  // En lg: adaptamos las columnas basadas en el NÚMERO DE LOGOS
-                  // En xl: también adaptamos
-
                   section.logos.length === 2
-                    ? "grid-cols-2 lg:grid-cols-2 xl:grid-cols-2" // Si hay 2 logos, 2 columnas y un max-w más pequeño para que estén más juntos
+                    ? "grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
                     : section.logos.length === 3
-                    ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3" // Si hay 3 logos, 3 columnas y un max-w medio
-                    : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5" // Por defecto (para 5+ logos o si quieres que se estiren más)
-                } `} // mx-auto para centrar la grilla si no llena el ancho del flex padre
+                    ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
+                    : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5"
+                } `}
               >
-                {section.logos.map((logo, logoIndex) => (
-                  <img
-                    key={logoIndex}
-                    src={logo.src}
-                    alt={logo.alt}
-                    className="sm:h-8 md:h-12 lg:h-16"
-                  />
-                ))}
+                {section.logos.map((logo, logoIndex) =>
+                  logo.href ? (
+                    <a
+                      key={logoIndex}
+                      href={logo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center"
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        className="sm:h-8 md:h-12 lg:h-16 transition-transform duration-200 hover:scale-105"
+                      />
+                    </a>
+                  ) : (
+                    // Si no hay href, solo renderiza la imagen sin enlace
+                    <img
+                      key={logoIndex} // Key es importante incluso si no hay enlace
+                      src={logo.src}
+                      alt={logo.alt}
+                      className="sm:h-8 md:h-12 lg:h-16" // No hay efecto hover ya que no es un enlace
+                    />
+                  )
+                )}
               </div>
             </div>
           </div>
