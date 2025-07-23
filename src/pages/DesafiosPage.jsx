@@ -15,8 +15,7 @@ import cmf from "../assets/cmf-recortado.png"; // Logo CMF para la card
 import nano from "../assets/nano-recortado.png"; // Logo NANO para la card
 import matchup from "../assets/matchup-recortado.png"; // Logo MATCHUP para la card
 
-import imagenCronograma from "../assets/linea-tiempo.png";
-import simbologia from "../assets/simbologia.png";
+import imagenCronograma from "../assets/Esquema_OpenFin.svg";
 
 // Imágenes específicas para la sección de detalles
 import cmfDetalleLogo from "../assets/cmf-morado.png";
@@ -495,16 +494,14 @@ export default function DesafiosPage() {
                 </p>
               </div>
 
-              <div className="w-full flex justify-around mb-6">
-                <img
-                  src={simbologia}
-                  alt="Simbologia del proceso de postulación"
-                  className="w-1/5 h-auto object-contain max-w-full" // w-full y h-auto para responsividad
-                />
+              <div className="w-full flex justify-center">
+                {" "}
+                {/* Añadido justify-center */}
                 <img
                   src={imagenCronograma}
                   alt="Cronograma del proceso de postulación"
-                  className="w-1/2 h-auto object-contain max-w-full" // w-full y h-auto para responsividad
+                  // Añadido max-w-xl (o el que consideres adecuado) y eliminado max-w-full
+                  className="h-auto object-contain w-full" // Opciones: max-w-lg, max-w-2xl, w-3/4, etc.
                 />
               </div>
             </div>
