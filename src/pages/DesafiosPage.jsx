@@ -471,26 +471,28 @@ export default function DesafiosPage() {
               {/* Los pasos del proceso */}
               <div className="space-y-4 text-sky-800 text-lg leading-relaxed mb-8">
                 <p>
-                  <span className="font-bold ">1) Inscripciones</span> (hasta el
-                  25 de Julio de 2025): Para participar solo debes inscribirte
-                  para mostrar tu interés en uno o varios desafíos, aún no es
-                  necesario que tengas un equipo o proyecto.
+                  <span className="font-bold ">1) Inscripciones:</span> Para
+                  participar inscríbete para mostrar tu interés en uno o varios
+                  desafíos, aún no es necesario que tengas un equipo o proyecto.
                 </p>
                 <p>
-                  <span className="font-bold">2) Charla Desafíos</span> (por
-                  definir): Habrá una sesión online donde las empresas
-                  presentarán sus desafíos y podrán contestar dudas de los
-                  participantes, para que las resuelvas antes de postular tu
-                  proyecto.
+                  <span className="font-bold">
+                    2) Charla Desafíos (Martes 12 de Agosto, 12:00 hrs):{" "}
+                  </span>
+                  Sesión online donde las empresas presentarán sus desafíos y
+                  podrán contestar dudas de los participantes, para que las
+                  resuelvas antes de postular tu proyecto.
                 </p>
                 <p>
-                  <span className="font-bold">3) Postulación</span> (hasta el 15
-                  de Agosto de 2025): Los proyectos podrán postular llenando el
-                  formulario de postulación que estará disponible en este sitio.
+                  <span className="font-bold">
+                    3) Postulación (hasta el Viernes 29 de Agosto de 2025):
+                  </span>{" "}
+                  Los proyectos podrán postular llenando el formulario de
+                  postulación que estará disponible en este sitio.
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
-                  resultados se comunicarán el Viernes 15 de Agosto de 2025.
+                  resultados se comunicarán el  <span className="font-bold">Viernes 5 de Septiembre de 2025.</span>
                 </p>
               </div>
 
