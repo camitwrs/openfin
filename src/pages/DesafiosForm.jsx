@@ -17,6 +17,8 @@ import {
   Send, // Normal send icon
   ClipboardList, // Icon for challenges
   ArrowLeft,
+  File,
+  Download, // Importar el icono de descarga
   // Lightbulb ya no se usa para capacidadesDesafio
 } from "lucide-react";
 
@@ -445,6 +447,40 @@ export default function DesafiosForm() {
                     {errors.desafioInteres}
                   </p>
                 )}
+              </div>
+
+              {/* Sección de Formulario de Postulación (NUEVA SECCIÓN) */}
+              <div className="space-y-4 mt-8">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium flex items-center gap-2">
+                    <File className="w-4 h-4" />
+                    Descargar y completar el Formulario de Postulación
+                    (documento adjunto) <span className="text-red-500">*</span>
+                  </Label>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    El formulario debe ser enviado al correo electrónico{" "}
+                    <a
+                      href="mailto:openfin@pucv.cl"
+                      className="text-blue-600 hover:underline"
+                    >
+                      openfin@pucv.cl
+                    </a>{" "}
+                    con plazo máximo el viernes 29 de agosto de 2025.
+                  </p>
+                </div>
+                <a
+                  href="/archivos/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
+                  download // Atributo para forzar la descarga
+                  className="inline-block"
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full cursor-pointer sm:w-auto px-6 py-2 text-md"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Descargar Formulario
+                  </Button>
+                </a>
               </div>
 
               {/* Submit Button */}

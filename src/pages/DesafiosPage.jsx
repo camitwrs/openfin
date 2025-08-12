@@ -13,19 +13,20 @@ import {
   CheckCircle,
   Trophy,
   BellRing,
+  Download, // Importamos el icono de descarga
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 // Tus imágenes existentes para las cards
-import equiposimg from "../assets/equipos.webp"; // Asumo que aún tienes estas imágenes si las reactivas
+import equiposimg from "../assets/equipos.webp";
 import financiamientoimg from "../assets/financiamiento.webp";
 import partnersimg from "../assets/partners.webp";
-import fondodesafios from "../assets/fondo-desafios.png"; // Imagen de fondo para las cards de desafío
-import cmf from "../assets/cmf-recortado.png"; // Logo CMF para la card
-import nano from "../assets/nano-recortado.png"; // Logo NANO para la card
-import matchup from "../assets/matchup-recortado.png"; // Logo MATCHUP para la card
+import fondodesafios from "../assets/fondo-desafios.png";
+import cmf from "../assets/cmf-recortado.png";
+import nano from "../assets/nano-recortado.png";
+import matchup from "../assets/matchup-recortado.png";
 
 import imagenCronograma from "../assets/Esquema_OpenFin.svg";
 
@@ -36,7 +37,7 @@ import matchupDetalleLogo from "../assets/matchup-azul-recortado.png";
 
 import FI3_image from "../assets/imagen_fondo_concursable.png";
 
-import { useRef } from "react"; // <--- Importar useRef
+import { useRef } from "react";
 
 // Nuevo componente de línea de tiempo
 const Timeline = ({ timelineItems }) => {
@@ -57,6 +58,11 @@ const Timeline = ({ timelineItems }) => {
           {/* Texto debajo del icono */}
           <div className="mt-2">
             <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
+            {item.subtitle && ( // Renderiza el subtítulo si existe
+              <p className="text-xs font-medium text-slate-600">
+                {item.subtitle}
+              </p>
+            )}
             <p className="text-xs text-slate-600">{item.date}</p>
           </div>
         </div>
@@ -70,8 +76,8 @@ const Timeline = ({ timelineItems }) => {
           height: 0,
           borderTop: "8px solid transparent",
           borderBottom: "8px solid transparent",
-          borderLeft: "10px solid #53eafd", // Color de la flecha, a juego con el degradado final
-          right: "-5px", // Ajusta la posición de la flecha
+          borderLeft: "10px solid #53eafd",
+          right: "-5px",
           zIndex: 10,
         }}
       ></div>
@@ -82,13 +88,24 @@ const Timeline = ({ timelineItems }) => {
 export default function DesafiosPage() {
   const navigate = useNavigate();
 
-  // Referencias para las secciones a las que haremos scroll
-  // Se crearán dinámicamente o puedes inicializarlas para los IDs conocidos
+  // Referencia para la sección de inscripción para hacer scroll
+  const inscripcionRef = useRef(null);
+
+  // Referencias para las secciones a las que haremos scroll desde las cards
   const refs = {
     cmf: useRef(null),
     nano: useRef(null),
     abierto: useRef(null),
-    // Agrega refs para más IDs si los necesitas en el futuro, o maneja dinámicamente
+  };
+
+  // Función para hacer scroll a la sección de inscripción
+  const scrollToInscripcion = () => {
+    if (inscripcionRef.current) {
+      inscripcionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
   // Array de servicios/desafíos con sus detalles
@@ -102,7 +119,6 @@ export default function DesafiosPage() {
       secondaryLogo: cmf, // Logo CMF para la card
       gradient: "from-blue-700 to-blue-100", // Gradiente para la card
       details: {
-        // <--- DETALLES PARA LA SECCIÓN INFERIOR
         logo: cmfDetalleLogo, // Logo específico para la sección de detalle CMF
         context: {
           title: "Contexto",
@@ -110,7 +126,6 @@ export default function DesafiosPage() {
             "En 2025 entró en vigencia de NCG 461 que obliga la inclusión de información acerca de factores Ambientales, Sociales y de Gobierno Corporativo (ASG) en los reportes de las entidades del mercado financiero.",
         },
         report: {
-          // Sección específica para CMF
           title: "Reporte de las empresas",
           items: [
             "Heterogeneidad de los Datos",
@@ -121,13 +136,11 @@ export default function DesafiosPage() {
           ],
         },
         mainChallenge: {
-          // Sección específica para CMF
           title: "Desafíos para la CMF",
           description:
             "Generar una herramienta SupTech (Supervision Technology) que ayude a la CMF a gestionar el cumplimiento normativo en cuanto a ASG y NCG 461",
         },
         specificChallenges: [
-          // Desafíos 1, 2, 3
           {
             title:
               "Desafío 1: Chatbot para Consultas sobre Reglamentos Internos, Folletos Informativos y Otros Documentos",
@@ -148,7 +161,7 @@ export default function DesafiosPage() {
           },
         ],
       },
-    }, // <-- ¡COMAS CRUCIALES AQUÍ!
+    },
     {
       id: "nano",
       title: "DESAFÍO NANO TC",
@@ -158,14 +171,13 @@ export default function DesafiosPage() {
       secondaryLogo: nano,
       gradient: "from-blue-700 to-blue-100",
       details: {
-        logo: nanoDetalleLogo, // Logo específico para Nano TC
+        logo: nanoDetalleLogo,
         context: {
           title: "Contexto",
           description:
             "Nano TC combina investigación, desarrollo e innovación (I+D+I), escalamiento y diseño de soluciones personalizadas. Trabaja en colaboración con la industria y centros de investigación para validar y aplicar nanomateriales como nanopartículas de cobre (NPCu) y óxido de grafeno (OG)",
         },
         applicationIndustry: {
-          // Sección específica para Nano TC
           title: "Industrias aplicación",
           columns: [
             [
@@ -179,7 +191,6 @@ export default function DesafiosPage() {
           ],
         },
         specificChallenges: [
-          // Sub-desafíos para Nano TC
           {
             title:
               "Desafío 1: Validar la acción anticorrosiva del óxido de grafeno en pinturas de base orgánica",
@@ -194,7 +205,7 @@ export default function DesafiosPage() {
           },
         ],
       },
-    }, // <-- ¡COMAS CRUCIALES AQUÍ!
+    },
     {
       id: "abierto",
       title: "DESAFÍO ABIERTO",
@@ -204,14 +215,12 @@ export default function DesafiosPage() {
       secondaryLogo: matchup,
       gradient: "from-blue-700 to-blue-100",
       details: {
-        logo: matchupDetalleLogo, // Logo específico para Abierto
+        logo: matchupDetalleLogo,
         context: {
           title: "Contexto",
           description:
             "Instancia orientada a que equipos académicos/as PUCV propongan sus propios desafíos en colaboración con la industria, a partir de oportunidades detectadas en el evento MatchUp u otras iniciativas de vinculación universidad–industria.",
         },
-        // Este desafío puede no tener los mismos sub-desafíos específicos.
-        // Asegúrate de que la estructura de 'details' coincida con lo que se renderiza.
         specificChallenges: [],
       },
     },
@@ -229,8 +238,9 @@ export default function DesafiosPage() {
       date: "Fecha a confirmar",
     },
     {
-      icon: <Send className="w-8 h-8" />,
+      icon: <Download className="w-8 h-8" />,
       title: "Postulación",
+      subtitle: "Descargar y Enviar Formulario", // Nuevo subtítulo
       date: "Hasta 29 de Agosto de 2025",
     },
     {
@@ -242,18 +252,14 @@ export default function DesafiosPage() {
 
   // Modificar handleServiceClick para hacer scroll al ID del servicio
   const handleServiceClick = (serviceId) => {
-    const targetRef = refs[serviceId]; // Accede a la ref dinámica
+    const targetRef = refs[serviceId];
     if (targetRef && targetRef.current) {
       targetRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  const handleInscripcionDesafioClick = () => {
-    navigate("/desafios-inscripcion");
-  };
-
   const BASES_CONCURSO_PDF_URL =
-    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv-2025-v3.pdf";
+    "/archivos/bases-convocatoria-desafios-ingenieria-pucv-2025-v3.pdf";
 
   return (
     <div className="bg-slate-50 py-16">
@@ -269,7 +275,7 @@ export default function DesafiosPage() {
               <h1 className="text-4xl md:text-5xl lg:text-4xl font-extrabold text-sky-900 mb-4 leading-tight">
                 Desafíos de Ingeniería PUCV
               </h1>
-              <div className="w-24 h-0.5 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-full mx-auto lg:mx-0 mb-6"></div>{" "}
+              <div className="w-24 h-0.5 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-full mx-auto lg:mx-0 mb-6"></div>
               <p className="text-lg lg:text-xl text-slate-600 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
                 Espacio que articula desafíos de la industria con equipos
                 académicos/as PUCV, para abordar necesidades reales mediante
@@ -282,7 +288,7 @@ export default function DesafiosPage() {
                 ¿Eres académico/a y te interesan los desafíos con la industria?
               </p>
               <Button
-                onClick={handleInscripcionDesafioClick}
+                onClick={scrollToInscripcion}
                 className="bg-gradient-to-r cursor-pointer from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg uppercase w-full sm:w-auto"
               >
                 PARTICIPA
@@ -302,7 +308,7 @@ export default function DesafiosPage() {
                   <Card
                     key={index}
                     className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-0 overflow-hidden bg-white"
-                    onClick={() => handleServiceClick(service.id)} // Pasa el ID del servicio
+                    onClick={() => handleServiceClick(service.id)}
                   >
                     <div className="relative h-48 overflow-hidden">
                       <Badge
@@ -349,16 +355,14 @@ export default function DesafiosPage() {
             </div>
 
             {/* --- SECCIÓN DE DETALLE DE DESAFÍOS (GENERADA DINÁMICAMENTE) --- */}
-            {/* Mapea los servicios que tienen 'details' */}
             {services.map(
               (service) =>
-                service.details && ( // Solo renderiza esta sección si service.details existe
+                service.details && (
                   <div
                     key={service.id}
                     ref={refs[service.id]}
                     className="max-w-7xl mx-auto px-8 py-8 bg-white shadow-md rounded-lg mb-16"
                   >
-                    {/* Encabezado del Desafío de detalle */}
                     <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                       <div className="bg-[#3D82EB] text-white px-4 py-2 rounded-md font-extrabold text-xl mb-4 md:mb-0">
                         {service.title}
@@ -372,15 +376,12 @@ export default function DesafiosPage() {
                       )}
                     </div>
 
-                    {/* Contenido principal: Contexto y Reporte/Industrias (GRID) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                      {/* Contexto */}
                       <div
-                        // Aplica col-span-full si NO existe ni report ni applicationIndustry
                         className={
                           !service.details.report &&
                           !service.details.applicationIndustry
-                            ? "md:col-span-full" // Ocupa las 2 columnas si no hay sección a la derecha
+                            ? "md:col-span-full"
                             : ""
                         }
                       >
@@ -391,20 +392,19 @@ export default function DesafiosPage() {
                           {service.details.context.description}
                         </p>
                       </div>
-                      {/* Reporte de las empresas / Industrias de aplicación (Condicional) */}
                       <div>
                         <h2 className="text-xl font-extrabold text-[#3D82EB] mb-2">
                           {service.details.report?.title ||
                             service.details.applicationIndustry?.title}
                         </h2>
-                        {service.details.report && ( // Si tiene 'report' (para CMF)
+                        {service.details.report && (
                           <ol className="list-decimal list-inside text-sky-800 leading-relaxed">
                             {service.details.report.items.map((item, i) => (
                               <li key={i}>{item}</li>
                             ))}
                           </ol>
                         )}
-                        {service.details.applicationIndustry && ( // Si tiene 'applicationIndustry' (para Nano TC)
+                        {service.details.applicationIndustry && (
                           <div className="grid grid-cols-2 gap-x-8 text-sky-800 leading-relaxed">
                             {service.details.applicationIndustry.columns.map(
                               (column, colIndex) => (
@@ -423,7 +423,6 @@ export default function DesafiosPage() {
                       </div>
                     </div>
 
-                    {/* Desafíos para la CMF / Main Challenge (Condicional) */}
                     {service.details.mainChallenge && (
                       <div className="mb-8">
                         <h2 className="text-xl font-extrabold text-[#3D82EB] mb-4">
@@ -435,7 +434,6 @@ export default function DesafiosPage() {
                       </div>
                     )}
 
-                    {/* Desafíos Específicos (Desafío 1, 2, 3) - Mapea desde el array specificChallenges */}
                     <div className="space-y-6">
                       {service.details.specificChallenges.map(
                         (challenge, index) => (
@@ -458,13 +456,8 @@ export default function DesafiosPage() {
             )}
           </div>
 
-          {/* FIN SECCIÓN DE DETALLE DINÁMICA */}
           <div className="bg-white p-8 rounded-lg shadow-md mb-16">
-            {" "}
-            {/* Fondo blanco y padding interno */}
-            {/* Header principal de la sección FI3 */}
             <div className="relative bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg p-8 mb-8 overflow-hidden">
-              {/* Imagen de fondo del header - Se aplica como estilo de fondo para un control fácil */}
               <div
                 className="absolute inset-0 w-full h-full object-cover rounded-lg opacity-30"
                 style={{
@@ -487,7 +480,7 @@ export default function DesafiosPage() {
                 </div>
                 <div className="md:w-1/3 flex justify-center md:justify-end">
                   <Button
-                    onClick={handleInscripcionDesafioClick}
+                    onClick={scrollToInscripcion}
                     className="cursor-pointer mt-16 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:scale-102 border-2 text-white font-bold px-10 py-6 rounded-lg shadow-lg transition-all duration-300 text-lg uppercase"
                   >
                     INSCRÍBETE AL DESAFÍO
@@ -495,7 +488,6 @@ export default function DesafiosPage() {
                 </div>
               </div>
             </div>
-            {/* Sección de Desafíos (Lista) y Botón de Bases */}
             <div className="flex flex-col md:flex-row justify-between items-start mb-12">
               <div className="mb-4 md:mb-0">
                 <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-4">
@@ -508,8 +500,6 @@ export default function DesafiosPage() {
                     Desafío Abierto: Para desafíos con cualquier empresa u
                     organización.
                     <div className="ml-6 mt-4 border-l-4 border-sky-500 pl-4">
-                      {" "}
-                      {/* Añade un poco de indentación y una línea lateral */}
                       <h4 className="text-md font-bold text-sky-600 mb-2">
                         Postulantes
                       </h4>
@@ -517,9 +507,9 @@ export default function DesafiosPage() {
                         Académicos, profesionales y estudiantes de la PUCV. Ver
                         más detalle en{" "}
                         <a
-                          href={BASES_CONCURSO_PDF_URL} // ¡REEMPLAZA ESTO CON LA URL REAL!
-                          target="_blank" // Abre el enlace en una nueva pestaña
-                          rel="noopener noreferrer" // Mejora la seguridad al abrir nuevas pestañas
+                          href={BASES_CONCURSO_PDF_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-sky-600 hover:underline font-semibold"
                         >
                           bases concursables
@@ -531,7 +521,7 @@ export default function DesafiosPage() {
                 </ol>
               </div>
               <a
-                href={BASES_CONCURSO_PDF_URL} // <-- La URL relativa ahora apunta al PDF en 'public'
+                href={BASES_CONCURSO_PDF_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cursor-pointer font-bold px-6 py-4 rounded-md shadow-md transition-colors text-lg uppercase bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 hover:scale-102 border-2 text-white flex items-center justify-center text-center"
@@ -540,30 +530,29 @@ export default function DesafiosPage() {
               </a>
             </div>
             {/* Proceso de postulación - Cronograma */}
-            <div className="mb-12">
+            <div ref={inscripcionRef} className="mb-12 pt-8">
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-6">
                 Proceso de postulación
               </h2>
-
-              {/* Aquí estaba la lista de texto, ahora reemplazada por el componente de línea de tiempo */}
               <div className="space-y-4 text-sky-800 text-lg leading-relaxed mb-8">
                 <p>
-                  <span className="font-bold ">1) Inscripciones:</span> Para
+                  <span className="font-bold">1) Inscripciones:</span> Para
                   participar inscríbete para mostrar tu interés en uno o varios
                   desafíos, aún no es necesario que tengas un equipo o proyecto.
                 </p>
                 <p>
                   <span className="font-bold">2) Charla Desafíos: </span>
                   Sesión online donde las empresas presentarán sus desafíos y
-                  podrán contestar dudas de los participantes, para que las
-                  resuelvas antes de postular tu proyecto.
+                  podrán contestar dudas de los participantes.
                 </p>
                 <p>
-                  <span className="font-bold">
-                    3) Postulación (hasta el Viernes 29 de Agosto de 2025):
-                  </span>{" "}
-                  Los proyectos podrán postular llenando el formulario de
-                  postulación que estará disponible en este sitio.
+                  <span className="font-bold">3) Postulación: </span>
+                  Descarga el formulario de postulación a continuación,
+                  complétalo y envíalo al correo electrónico{" "}
+                  <span className="font-semibold text-blue-600">
+                    openfin@pucv.cl
+                  </span>
+                  .
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
@@ -574,8 +563,21 @@ export default function DesafiosPage() {
                 </p>
               </div>
 
-              {/* Nuevo Timeline Component */}
               <Timeline timelineItems={timelineItems} />
+
+              {/* Botón de descarga del formulario */}
+              <div className="flex justify-center mt-8">
+                <a
+                  href="/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
+                  download
+                  className="inline-block"
+                >
+                  <Button className="cursor-pointer bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg uppercase">
+                    <Download className="mr-2 h-5 w-5" />
+                    Descargar Formulario de Postulación
+                  </Button>
+                </a>
+              </div>
             </div>
             <div className="max-w-7xl mx-auto px-4 py-8">
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-4">

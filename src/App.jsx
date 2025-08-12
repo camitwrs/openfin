@@ -24,7 +24,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<DesafiosPage />} />
-            <Route path="/desafios-inscripcion" element={<DesafiosForm />} />
+            {/* <Route path="/desafios-inscripcion" element={<DesafiosForm />} /> */}
             {/* <Route path="/estudiantes" element={<EstudiantesPage />} />
             <Route
               path="/estudiantes/connecta-industria"
