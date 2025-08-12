@@ -56,14 +56,8 @@ const Timeline = ({ timelineItems }) => {
             {item.icon}
           </div>
           {/* Texto debajo del icono */}
-          {/* Se ha añadido `min-h-[60px]` para asegurar altura consistente */}
-          <div className="mt-2 min-h-[60px] flex flex-col justify-center">
+          <div className="mt-2">
             <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
-            {item.subtitle && ( // Renderiza el subtítulo si existe
-              <p className="text-xs font-medium text-slate-600">
-                {item.subtitle}
-              </p>
-            )}
             <p className="text-xs text-slate-600">{item.date}</p>
           </div>
         </div>
@@ -241,7 +235,6 @@ export default function DesafiosPage() {
     {
       icon: <Download className="w-8 h-8" />,
       title: "Postulación",
-      subtitle: "Descargar y Enviar Formulario", // Nuevo subtítulo
       date: "Hasta 29 de Agosto de 2025",
     },
     {
