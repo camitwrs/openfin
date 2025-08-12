@@ -1,7 +1,19 @@
 // src/pages/DesafiosPage.jsx
 // React-Vite App
 
-import { Users, DollarSign, Handshake, ArrowRight, Mail } from "lucide-react";
+import {
+  Users,
+  DollarSign,
+  Handshake,
+  ArrowRight,
+  Mail,
+  Calendar,
+  Edit,
+  Send,
+  CheckCircle,
+  Trophy,
+  BellRing,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,6 +37,47 @@ import matchupDetalleLogo from "../assets/matchup-azul-recortado.png";
 import FI3_image from "../assets/imagen_fondo_concursable.png";
 
 import { useRef } from "react"; // <--- Importar useRef
+
+// Nuevo componente de línea de tiempo
+const Timeline = ({ timelineItems }) => {
+  return (
+    <div className="flex justify-center items-center py-8 relative">
+      {/* Línea horizontal principal que conecta todos los hitos */}
+      <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transform -translate-y-1/2 z-0"></div>
+
+      {timelineItems.map((item, index) => (
+        <div
+          key={index}
+          className="flex-1 flex flex-col items-center text-center px-4 z-10 relative"
+        >
+          {/* Círculo con icono */}
+          <div className="w-12 text-blue-600 h-12 rounded-full bg-white border-2 border-blue-400 flex items-center justify-center shadow-md">
+            {item.icon}
+          </div>
+          {/* Texto debajo del icono */}
+          <div className="mt-2">
+            <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
+            <p className="text-xs text-slate-600">{item.date}</p>
+          </div>
+        </div>
+      ))}
+
+      {/* Punta de flecha al final de la línea del tiempo */}
+      <div
+        className="absolute right-0 top-1/2 transform -translate-y-1/2"
+        style={{
+          width: 0,
+          height: 0,
+          borderTop: "8px solid transparent",
+          borderBottom: "8px solid transparent",
+          borderLeft: "10px solid #53eafd", // Color de la flecha, a juego con el degradado final
+          right: "-5px", // Ajusta la posición de la flecha
+          zIndex: 10,
+        }}
+      ></div>
+    </div>
+  );
+};
 
 export default function DesafiosPage() {
   const navigate = useNavigate();
@@ -161,6 +214,29 @@ export default function DesafiosPage() {
         // Asegúrate de que la estructura de 'details' coincida con lo que se renderiza.
         specificChallenges: [],
       },
+    },
+  ];
+
+  const timelineItems = [
+    {
+      icon: <BellRing className="w-8 h-8" />,
+      title: "Inscripciones",
+      date: "Hasta 29 de Agosto de 2025",
+    },
+    {
+      icon: <Mail className="w-8 h-8" />,
+      title: "Charla Desafíos",
+      date: "Fecha a confirmar",
+    },
+    {
+      icon: <Send className="w-8 h-8" />,
+      title: "Postulación",
+      date: "Hasta 29 de Agosto de 2025",
+    },
+    {
+      icon: <Trophy className="w-8 h-8" />,
+      title: "Resultados",
+      date: "5 de Septiembre de 2025",
     },
   ];
 
@@ -468,7 +544,8 @@ export default function DesafiosPage() {
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-6">
                 Proceso de postulación
               </h2>
-              {/* Los pasos del proceso */}
+
+              {/* Aquí estaba la lista de texto, ahora reemplazada por el componente de línea de tiempo */}
               <div className="space-y-4 text-sky-800 text-lg leading-relaxed mb-8">
                 <p>
                   <span className="font-bold ">1) Inscripciones:</span> Para
@@ -476,9 +553,7 @@ export default function DesafiosPage() {
                   desafíos, aún no es necesario que tengas un equipo o proyecto.
                 </p>
                 <p>
-                  <span className="font-bold">
-                    2) Charla Desafíos:{" "}
-                  </span>
+                  <span className="font-bold">2) Charla Desafíos: </span>
                   Sesión online donde las empresas presentarán sus desafíos y
                   podrán contestar dudas de los participantes, para que las
                   resuelvas antes de postular tu proyecto.
@@ -499,14 +574,8 @@ export default function DesafiosPage() {
                 </p>
               </div>
 
-              {/* <div className="w-full flex justify-center">
-                <img
-                  src={imagenCronograma}
-                  alt="Cronograma del proceso de postulación"
-                  // Añadido max-w-xl (o el que consideres adecuado) y eliminado max-w-full
-                  className="h-auto object-contain w-full" // Opciones: max-w-lg, max-w-2xl, w-3/4, etc.
-                />
-              </div> */}
+              {/* Nuevo Timeline Component */}
+              <Timeline timelineItems={timelineItems} />
             </div>
             <div className="max-w-7xl mx-auto px-4 py-8">
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-4">
