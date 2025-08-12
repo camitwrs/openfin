@@ -561,7 +561,7 @@ export default function DesafiosPage() {
               {/* Botón de descarga del formulario */}
               <div className="flex justify-center mt-8">
                 <a
-                  href="/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
+                  href="/archivos/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
                   download
                   className="inline-block"
                 >
