@@ -348,7 +348,6 @@ export default function DesafiosPage() {
               })}
             </div>
 
-            {/* --- SECCIÓN DE DETALLE DE DESAFÍOS (GENERADA DINÁMICAMENTE) --- */}
             {services.map(
               (service) =>
                 service.details && (
