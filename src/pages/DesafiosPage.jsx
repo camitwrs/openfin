@@ -477,7 +477,7 @@ export default function DesafiosPage() {
                 </p>
                 <p>
                   <span className="font-bold">
-                    2) Charla Desafíos (Martes 12 de Agosto, 12:00 hrs):{" "}
+                    2) Charla Desafíos:{" "}
                   </span>
                   Sesión online donde las empresas presentarán sus desafíos y
                   podrán contestar dudas de los participantes, para que las
