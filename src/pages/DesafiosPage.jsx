@@ -492,20 +492,21 @@ export default function DesafiosPage() {
                 </p>
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
-                  resultados se comunicarán el  <span className="font-bold">Viernes 5 de Septiembre de 2025.</span>
+                  resultados se comunicarán el{" "}
+                  <span className="font-bold">
+                    Viernes 5 de Septiembre de 2025.
+                  </span>
                 </p>
               </div>
 
-              <div className="w-full flex justify-center">
-                {" "}
-                {/* Añadido justify-center */}
+              {/* <div className="w-full flex justify-center">
                 <img
                   src={imagenCronograma}
                   alt="Cronograma del proceso de postulación"
                   // Añadido max-w-xl (o el que consideres adecuado) y eliminado max-w-full
                   className="h-auto object-contain w-full" // Opciones: max-w-lg, max-w-2xl, w-3/4, etc.
                 />
-              </div>
+              </div> */}
             </div>
             <div className="max-w-7xl mx-auto px-4 py-8">
               <h2 className="text-2xl font-extrabold text-[#3D82EB] mb-4">
