@@ -56,7 +56,8 @@ const Timeline = ({ timelineItems }) => {
             {item.icon}
           </div>
           {/* Texto debajo del icono */}
-          <div className="mt-2">
+          {/* Se ha añadido `min-h-[60px]` para asegurar altura consistente */}
+          <div className="mt-2 min-h-[60px] flex flex-col justify-center">
             <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
             {item.subtitle && ( // Renderiza el subtítulo si existe
               <p className="text-xs font-medium text-slate-600">
