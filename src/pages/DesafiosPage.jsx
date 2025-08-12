@@ -177,7 +177,7 @@ export default function DesafiosPage() {
   };
 
   const BASES_CONCURSO_PDF_URL =
-    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv-2025-v1.pdf";
+    "/pdfs/bases-convocatoria-desafios-ingenieria-pucv-2025-v3.pdf";
 
   return (
     <div className="bg-slate-50 py-16">
