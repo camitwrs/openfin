@@ -42,40 +42,39 @@ import { useRef } from "react";
 // Nuevo componente de línea de tiempo
 const Timeline = ({ timelineItems }) => {
   return (
-    <div className="flex justify-center items-center py-8 relative">
-      {/* Línea horizontal principal que conecta todos los hitos */}
-      <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transform -translate-y-1/2 z-0"></div>
+    <div className="flex flex-col sm:flex-row justify-center items-center py-8 relative">
+      {/* Línea principal */}
+      <div
+        className={`
+          absolute sm:top-1/2 sm:left-0 
+          ${
+            timelineItems.length > 1
+              ? "bg-gradient-to-r sm:bg-gradient-to-b"
+              : ""
+          }
+          from-blue-400 to-cyan-400 
+          transform sm:-translate-y-1/2 z-0
+          ${/* Horizontal en desktop */ ""}
+          sm:w-full sm:h-0.5 
+          ${/* Vertical en mobile */ ""}
+          w-0.5 h-full sm:h-0.5
+        `}
+      ></div>
 
       {timelineItems.map((item, index) => (
         <div
           key={index}
-          className="flex-1 flex flex-col items-center text-center px-4 z-10 relative"
+          className="flex-1 flex flex-col items-center text-center px-4 py-4 z-10 relative"
         >
-          {/* Círculo con icono */}
-          <div className="w-12 text-blue-600 h-12 rounded-full bg-white border-2 border-blue-400 flex items-center justify-center shadow-md">
+          <div className="w-12 h-12 rounded-full bg-white border-2 border-blue-400 flex items-center justify-center shadow-md text-blue-600">
             {item.icon}
           </div>
-          {/* Texto debajo del icono */}
           <div className="mt-2">
             <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
             <p className="text-xs text-slate-600">{item.date}</p>
           </div>
         </div>
       ))}
-
-      {/* Punta de flecha al final de la línea del tiempo */}
-      <div
-        className="absolute right-0 top-1/2 transform -translate-y-1/2"
-        style={{
-          width: 0,
-          height: 0,
-          borderTop: "8px solid transparent",
-          borderBottom: "8px solid transparent",
-          borderLeft: "10px solid #53eafd",
-          right: "-5px",
-          zIndex: 10,
-        }}
-      ></div>
     </div>
   );
 };
@@ -559,13 +558,13 @@ export default function DesafiosPage() {
               <Timeline timelineItems={timelineItems} />
 
               {/* Botón de descarga del formulario */}
-              <div className="flex justify-center mt-8">
+              <div className="flex justify-center mt-8 px-4">
                 <a
-                  href="/archivos/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
+                  href="/archivos/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx"
                   download
-                  className="inline-block"
+                  className="inline-block w-full sm:w-auto"
                 >
-                  <Button className="cursor-pointer bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg uppercase">
+                  <Button className="w-full sm:w-auto cursor-pointer bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base md:text-lg uppercase">
                     <Download className="mr-2 h-5 w-5" />
                     Descargar Formulario de Postulación
                   </Button>
