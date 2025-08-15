@@ -566,7 +566,12 @@ export default function DesafiosPage() {
                 >
                   <Button className="w-full sm:w-auto cursor-pointer bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-700 text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base md:text-lg uppercase">
                     <Download className="mr-2 h-5 w-5" />
-                    Descargar Formulario
+                    <span className="hidden sm:inline">
+                      Descargar Formulario de Postulación
+                    </span>
+                    <span className="inline sm:hidden">
+                      Descargar Formulario
+                    </span>
                   </Button>
                 </a>
               </div>
