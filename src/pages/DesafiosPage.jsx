@@ -2,15 +2,8 @@
 // React-Vite App
 
 import {
-  Users,
-  DollarSign,
-  Handshake,
   ArrowRight,
   Mail,
-  Calendar,
-  Edit,
-  Send,
-  CheckCircle,
   Trophy,
   BellRing,
   Download, // Importamos el icono de descarga
@@ -37,7 +30,7 @@ import matchupDetalleLogo from "../assets/matchup-azul-recortado.png";
 
 import FI3_image from "../assets/imagen_fondo_concursable.png";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // Nuevo componente de línea de tiempo
 const Timeline = ({ timelineItems }) => {
@@ -71,7 +64,7 @@ const Timeline = ({ timelineItems }) => {
           </div>
           <div className="mt-2">
             <h4 className="font-semibold text-sm text-sky-800">{item.title}</h4>
-            <p className="text-xs text-slate-600">{item.date}</p>
+            <p className="text-md text-slate-600">{item.date}</p>
           </div>
         </div>
       ))}
@@ -82,6 +75,8 @@ const Timeline = ({ timelineItems }) => {
 export default function DesafiosPage() {
   const navigate = useNavigate();
 
+  // ------ Estado para controlar la visibilidad del banner -----
+  const [showBanner, setShowBanner] = useState(true);
   // Referencia para la sección de inscripción para hacer scroll
   const inscripcionRef = useRef(null);
 
@@ -101,6 +96,17 @@ export default function DesafiosPage() {
       });
     }
   };
+
+  // ----- Lógica para verificar la fecha de con useEffect -----
+  useEffect(() => {
+    const today = new Date();
+    // La fecha límite es el 5 de septiembre. El banner debe desaparecer el 6 de septiembre.
+    const deadline = new Date("2025-09-06T00:00:00");
+
+    if (today >= deadline) {
+      setShowBanner(false);
+    }
+  }, []);
 
   // Array de servicios/desafíos con sus detalles
   const services = [
@@ -234,12 +240,12 @@ export default function DesafiosPage() {
     {
       icon: <Download className="w-8 h-8" />,
       title: "Postulación",
-      date: "Hasta 29 de Agosto de 2025",
+      date: "Hasta 5 de Septiembre 2025",
     },
     {
       icon: <Trophy className="w-8 h-8" />,
       title: "Resultados",
-      date: "5 de Septiembre de 2025",
+      date: "Viernes 12 de Septiembre de 2025",
     },
   ];
 
@@ -256,6 +262,12 @@ export default function DesafiosPage() {
 
   return (
     <div className="bg-slate-50 py-16">
+      {/* ----- Renderizado condicional del banner ----- */}
+      {showBanner && (
+        <div className="bg-blue-600 text-white text-center font-bold py-3 mb-8">
+          ¡NUEVA FECHA! Postulaciones hasta el 5 de Septiembre.
+        </div>
+      )}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 right-0 w-80 h-80 bg-sky-100/30 rounded-full -translate-y-40 translate-x-40"></div>
@@ -546,11 +558,12 @@ export default function DesafiosPage() {
                   </span>
                   .
                 </p>
+
                 <p>
                   <span className="font-bold">4) Resultados:</span> Los
                   resultados se comunicarán el{" "}
                   <span className="font-bold">
-                    Viernes 5 de Septiembre de 2025.
+                    Viernes 12 de Septiembre de 2025.
                   </span>
                 </p>
               </div>
