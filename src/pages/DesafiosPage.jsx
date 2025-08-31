@@ -4,6 +4,7 @@
 import {
   ArrowRight,
   Mail,
+  ArrowDown,
   Trophy,
   BellRing,
   Download, // Importamos el icono de descarga
@@ -264,8 +265,15 @@ export default function DesafiosPage() {
     <div className="bg-slate-50 py-16">
       {/* ----- Renderizado condicional del banner ----- */}
       {showBanner && (
-        <div className="bg-blue-600 text-white text-center font-bold py-3 mb-8">
-          ¡NUEVA FECHA! Postulaciones hasta el 5 de Septiembre.
+        <div className="bg-blue-600 text-white text-center font-bold py-3 mb-8 flex flex-col sm:flex-row justify-center items-center gap-4 px-4">
+          <span>¡NUEVA FECHA! Postulaciones hasta el 5 de Septiembre.</span>
+          <Button
+            onClick={scrollToInscripcion}
+            className="bg-white text-blue-600 hover:bg-slate-100 font-bold px-4 py-2 rounded-lg shadow-md cursor-pointer transition-all duration-300 text-xs sm:text-sm"
+          >
+            Llevame allí
+            <ArrowDown className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       )}
       <div className="relative overflow-hidden">
