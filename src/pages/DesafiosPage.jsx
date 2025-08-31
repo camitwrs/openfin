@@ -262,7 +262,7 @@ export default function DesafiosPage() {
     "/archivos/bases-convocatoria-desafios-ingenieria-pucv-2025-v3.pdf";
 
   return (
-    <div className="bg-slate-50 py-16">
+    <div className="bg-slate-50 pt-16 pb-6">
       {/* ----- Renderizado condicional del banner ----- */}
       {showBanner && (
         <div className="bg-blue-600 text-white text-center font-bold py-3 mb-8 flex flex-col sm:flex-row justify-center items-center gap-4 px-4">
