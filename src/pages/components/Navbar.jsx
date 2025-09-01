@@ -148,7 +148,7 @@ export default function Navbar() {
                   >
                     - Academia EBCT
                   </Link>
-                </div>
+                </div>*/}
                 <Link
                   to="/empresas"
                   className="flex items-center gap-3 text-lg font-medium text-sky-800 hover:text-sky-600 transition-colors py-2"
@@ -156,13 +156,13 @@ export default function Navbar() {
                   <Building2 className="w-6 h-6" />
                   Empresas
                 </Link>
-                <Link
+                {/* <Link
                   to="/academicos"
                   className="flex items-center gap-3 text-lg font-medium text-sky-800 hover:text-sky-600 transition-colors py-2"
                 >
                   <BookOpen className="w-6 h-6" />
                   Académicos/as
-                </Link> */}
+                </Link>  */}
                 <Link
                   to="/" // Mismas rutas que el botón de escritorio
                   className="flex items-center gap-3 text-lg font-medium text-sky-800 hover:text-sky-600 transition-colors py-2"

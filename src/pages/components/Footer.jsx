@@ -93,10 +93,10 @@ function Footer() {
               <div
                 className={`grid gap-y-4 gap-x-10 items-center justify-items-center ${
                   section.logos.length === 2
-                    ? "grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+                    ? "grid-cols-3 lg:grid-cols-2 xl:grid-cols-2"
                     : section.logos.length === 3
-                    ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
-                    : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5"
+                    ? "grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
+                    : "grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5"
                 } `}
               >
                 {section.logos.map((logo, logoIndex) =>
