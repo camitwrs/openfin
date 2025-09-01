@@ -37,12 +37,15 @@ function App() {
             <Route
               path="/estudiantes/academia-ebct"
               element={<AcedemiaEBCT />}
-            />
+            /> */}
             <Route path="/empresas" element={<EmpresasPage />} />
-            <Route path="/empresas/inscripcion" element={<EmpresasForm />} />
+            {/* <Route path="/empresas/inscripcion" element={<EmpresasForm />} /> */}
 
-            <Route path="/academicos" element={<AcademicosPage />} />
-            <Route path="/academicos/inscripcion" element={<AcademicosForm />} />
+            {/* <Route path="/academicos" element={<AcademicosPage />} />
+            <Route
+              path="/academicos/inscripcion"
+              element={<AcademicosForm />}
+            />
             <Route path="/venture-studio" element={<VentureStudioPage />} /> */}
           </Routes>
         </main>

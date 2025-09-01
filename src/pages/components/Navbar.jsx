@@ -75,16 +75,22 @@ export default function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu> */}
+          <button className="rounded-lg hover:bg-gray-100">
+            <Link to="/" className="flex items-center gap-1.5 px-3 py-2">
+              <Lightbulb className=" text-sky-900 w-5 h-5" />
+              <span className="uppercase font-bold text-sky-900">Desafíos</span>
+            </Link>
+          </button>
 
-          {/* <Button variant="outline" asChild>
+          <button className="rounded-lg hover:bg-gray-100">
             <Link
               to="/empresas"
               className="flex items-center gap-1.5 px-3 py-2"
             >
-              <Building2 className="w-5 h-5" />
-              <span>Empresas</span>
+              <Building2 className="text-sky-900 w-5 h-5" />
+              <span className="uppercase font-bold text-sky-900">Empresas</span>
             </Link>
-          </Button> */}
+          </button>
 
           {/* <Button variant="outline" asChild>
             <Link
@@ -95,15 +101,6 @@ export default function Navbar() {
               <span>Académicos/as</span>
             </Link>
           </Button> */}
-          <Button variant="outline" size="lg" asChild>
-            <Link
-              to="/"
-              className="flex items-center gap-1.5 px-3 py-2"
-            >
-              <Lightbulb className="w-5 h-5" />
-              <span>Desafíos</span>
-            </Link>
-          </Button>
         </div>
 
         {/* Botón de Hamburguesa (visible solo en móviles, oculto en md y más grandes) */}

@@ -81,7 +81,7 @@ function Footer() {
 
   return (
     <footer className="relative z-50 p-8 sm:p-12 text-white text-center">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-sky-800 to-sky-600"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {sections.map((section, sectionIndex) => (

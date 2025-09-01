@@ -7,6 +7,11 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)"],
       },
+      colors: {
+        azulsecundario: "#3D82EB",
+        azulprincipal: "#0c4a6e",
+        azulatencion: "#2563eb",
+      },
     },
   },
   plugins: [],
