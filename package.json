@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "sirv dist --no-clear --single"
+    "start": "serve dist -s"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.2",
@@ -26,8 +26,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
     "serve": "^14.2.4",
-    "tailwind-merge": "^3.3.1",
-    "sirv-cli": "2.0.2"
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
