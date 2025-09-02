@@ -561,10 +561,8 @@ export default function DesafiosForm() {
                   htmlFor="actividadesServicios"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  Indique las principales actividades o linea (keywords) que
-                  describen las actividades que realiza su empresa o área de
-                  trabajo (puede ser conceptos o términos por los que podrían
-                  buscar los servicios que su empresa puede ofrecer){" "}
+                  ¿Qué hace tu empresa/organización? Indica palabras clave
+                  (keywords) para describir tus productos o servicios.{" "}
                   <span className="text-gray-500">(Obligatorio)</span>
                 </Label>
                 <Textarea
