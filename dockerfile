@@ -37,6 +37,5 @@ RUN bun install --prod
 EXPOSE 3000
 
 # Define el comando que se ejecutará al iniciar el contenedor.
-# Usamos `bun run start` para ejecutar el script de inicio de tu package.json,
-# que ya tiene el flag `--single` para manejar las rutas.
-CMD ["bun", "run", "start"]
+# Usamos `sirv` directamente para asegurarnos de que el flag `--single` se use.
+CMD ["sirv", "dist", "--no-clear", "--single"]
