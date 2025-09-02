@@ -276,12 +276,7 @@ export default function DesafiosPage() {
           </Button>
         </div>
       )}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-sky-100/30 rounded-full -translate-y-40 translate-x-40"></div>
-          <div className="absolute bottom-0 left-0 w-60 h-60 bg-cyan-100/20 rounded-full translate-y-32 -translate-x-32"></div>
-        </div>
-
+      <div className="relative">
         <div className="relative max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-center lg:items-start text-center lg:text-left">
             <div className="mb-8 lg:mb-0 lg:col-span-2">

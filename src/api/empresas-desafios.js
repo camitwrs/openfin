@@ -1,10 +1,10 @@
 import API_BASE_URL from "./config.js";
 
-const DESAFIOS_API_URL = `${API_BASE_URL}/desafios`;
+const DESAFIOS_EMPRESAS_API_URL = `${API_BASE_URL}/empresas/desafios`;
 
 export const postInscripcionDesafio = async (formData) => {
   try {
-    const response = await fetch(`${DESAFIOS_API_URL}/inscripcion`, {
+    const response = await fetch(`${DESAFIOS_EMPRESAS_API_URL}/inscripcion`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -14,7 +14,7 @@ export const postInscripcionDesafio = async (formData) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || `Error HTTP: ${response.status}`);
+      throw new Error(JSON.stringify(errorData));
     }
 
     const data = await response.json();
@@ -27,7 +27,7 @@ export const postInscripcionDesafio = async (formData) => {
 
 export const getInscripcionesDesafios = async () => {
   try {
-    const response = await fetch(`${DESAFIOS_API_URL}/inscripciones`);
+    const response = await fetch(`${DESAFIOS_EMPRESAS_API_URL}/inscripciones`);
 
     if (!response.ok) {
       const errorData = await response.json();

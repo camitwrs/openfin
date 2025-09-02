@@ -4,25 +4,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox"; // <-- Importa Checkbox
+import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import fondoBanner from "../assets/fondo-desafios-2.webp";
 import {
   Mail,
   Building2,
   Users,
-  Loader2, // Spinner icon
-  CheckCircle, // Success icon
-  XCircle, // Error icon
-  Send, // Normal send icon
-  ClipboardList, // Icon for challenges
+  Loader2,
+  CheckCircle,
+  XCircle,
+  Send,
+  Phone,
+  Link,
+  ClipboardList,
   ArrowLeft,
-  File,
-  Download, // Importar el icono de descarga
-  // Lightbulb ya no se usa para capacidadesDesafio
+  Briefcase,
+  Lightbulb,
+  MessageCircle,
 } from "lucide-react";
 
-import { postInscripcionDesafio } from "../api/desafios.js"; // Asegúrate de que este endpoint maneje un array para desafiosInteres
+import { postInscripcionDesafio } from "../api/empresas-desafios.js";
 
 export default function DesafiosForm() {
   useLayoutEffect(() => {
@@ -34,76 +38,51 @@ export default function DesafiosForm() {
     nombre: "",
     apellido: "",
     correoElectronico: "",
-    unidadAcademica: "", // Contendrá el valor final (directo o de "Otra...")
-    desafioInteres: [], // <-- AHORA ES UN ARRAY para selección múltiple
-    // capacidadesDesafio: "", // <-- CAMPO ELIMINADO
+    nombreEmpresa: "",
+    areaTrabajo: "",
+    contactoWeb: "",
+    numeroTelefono: "",
+    actividadesServicios: "",
+    desafio1: "",
+    desafio2: "",
+    desafio3: "",
+    vinculoPucv: [], // Cambiado a un array para múltiples selecciones
+    masInformacion: "",
   });
 
-  const [otraUnidadText, setOtraUnidadText] = useState("");
-
+  const [otraVinculoText, setOtraVinculoText] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
-  const unidadesAcademicas = [
-    "Escuela de Ingeniería de Construcción y Transporte",
-    "Escuela de Ingeniería Eléctrica",
-    "Escuela de Ingeniería Mecánica",
-    "Escuela de Ingeniería Química",
-    "Escuela de Ingeniería Bioquímica",
-    "Escuela de Ingeniería Industrial",
-    "Escuela de Ingeniería Informática",
-    "Escuela de Ingeniería Civil",
-    "Otra...",
+  const vinculosPucvOptions = [
+    { value: "Alumni Pregrado", label: "Sí, soy Alumni (pregrado)" },
+    {
+      value: "Alumni Postgrado",
+      label: "Sí, soy Alumni (postgrado o formación continua)",
+    },
+    {
+      value: "Proyectos IDD",
+      label: "Sí, he participado en proyectos de I+D con la PUCV",
+    },
+    {
+      value: "Asistencia Tecnica",
+      label: "Sí, he contratado Asistencia Técnica con la PUCV",
+    },
+    { value: "Sin vinculos", label: "No he tenido vínculos" },
+    { value: "Otra", label: "Otra..." },
   ];
 
-  const desafiosOptions = [
-    // Cambiado a 'desafiosOptions' para mayor claridad
-    "Desafío CMF",
-    "Desafío NANOTC",
-    "Desafío Abierto (Otro desafío en colaboración con la industria)",
+  const masInformacionOptions = [
+    { value: "si", label: "Sí, estoy interesado/a" },
+    { value: "no", label: "No estoy interesado/a" },
   ];
 
-  // Modificado handleInputChange para gestionar checkboxes (desafiosInteres) y otros campos
   const handleInputChange = (field, value) => {
-    // Lógica para el RadioGroup de unidadesAcademicas
-    if (field === "unidadAcademica") {
-      if (value !== "Otra...") {
-        setOtraUnidadText(""); // Limpiar si cambia de "Otra..."
-      }
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    }
-    // Lógica para Checkboxes de desafiosInteres
-    else if (field === "desafioInteres") {
-      setFormData((prev) => {
-        const currentDesafios = prev.desafioInteres;
-        if (currentDesafios.includes(value)) {
-          // Si ya está, lo quita
-          return {
-            ...prev,
-            desafioInteres: currentDesafios.filter((d) => d !== value),
-          };
-        } else {
-          // Si no está, lo añade
-          return {
-            ...prev,
-            desafioInteres: [...currentDesafios, value],
-          };
-        }
-      });
-    }
-    // Lógica para otros campos (nombre, apellido, correoElectronico)
-    else {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    }
-
-    // Limpiar errores relevantes si el campo se está modificando
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,
@@ -112,12 +91,33 @@ export default function DesafiosForm() {
     }
   };
 
-  const handleOtraUnidadTextChange = (value) => {
-    setOtraUnidadText(value);
-    if (errors.unidadAcademica && value.trim() !== "") {
+  const handleCheckboxChange = (value, checked) => {
+    setFormData((prev) => {
+      let newVinculos = [...prev.vinculoPucv];
+      if (checked) {
+        newVinculos.push(value);
+      } else {
+        newVinculos = newVinculos.filter((v) => v !== value);
+      }
+      return {
+        ...prev,
+        vinculoPucv: newVinculos,
+      };
+    });
+    if (errors.vinculoPucv) {
       setErrors((prev) => ({
         ...prev,
-        unidadAcademica: "",
+        vinculoPucv: "",
+      }));
+    }
+  };
+
+  const handleOtraVinculoTextChange = (value) => {
+    setOtraVinculoText(value);
+    if (errors.vinculoPucv && value.trim() !== "") {
+      setErrors((prev) => ({
+        ...prev,
+        vinculoPucv: "",
       }));
     }
   };
@@ -128,22 +128,29 @@ export default function DesafiosForm() {
       "nombre",
       "apellido",
       "correoElectronico",
-      "unidadAcademica",
-      // "capacidadesDesafio" ya no es campo requerido del frontend
+      "nombreEmpresa",
+      "areaTrabajo",
+      "vinculoPucv",
+      "numeroTelefono",
+      "actividadesServicios",
+      "desafio1",
+      "masInformacion",
     ];
 
     requiredFields.forEach((field) => {
-      // Validación general para campos de texto/RadioGroup
-      if (typeof formData[field] === "string" && !formData[field].trim()) {
+      if (
+        field === "vinculoPucv" &&
+        (!Array.isArray(formData.vinculoPucv) ||
+          formData.vinculoPucv.length === 0)
+      ) {
+        newErrors[field] = "Seleccione al menos un vínculo";
+      } else if (
+        typeof formData[field] === "string" &&
+        !formData[field].trim()
+      ) {
         newErrors[field] = "Este campo es obligatorio";
       }
     });
-
-    // Validación específica para el array de desafíos
-    if (formData.desafioInteres.length === 0) {
-      // Verifica si el array está vacío
-      newErrors.desafioInteres = "Debe seleccionar al menos un desafío";
-    }
 
     if (
       formData.correoElectronico &&
@@ -152,8 +159,8 @@ export default function DesafiosForm() {
       newErrors.correoElectronico = "Ingrese un correo electrónico válido";
     }
 
-    if (formData.unidadAcademica === "Otra..." && !otraUnidadText.trim()) {
-      newErrors.unidadAcademica = "Por favor especifique la unidad académica";
+    if (formData.vinculoPucv.includes("Otra") && !otraVinculoText.trim()) {
+      newErrors.vinculoPucv = "Por favor especifique el vínculo con la PUCV";
     }
 
     setErrors(newErrors);
@@ -164,43 +171,65 @@ export default function DesafiosForm() {
     e.preventDefault();
     setSubmitMessage({ type: "", text: "" });
 
-    // Validar el formulario primero
     if (!validateForm()) {
       return;
     }
 
-    // Clonamos formData para hacer modificaciones antes de enviar al backend
     let dataToSend = { ...formData };
 
-    // Lógica para pre-procesar 'unidadAcademica'
-    if (dataToSend.unidadAcademica === "Otra...") {
-      dataToSend.unidadAcademica = otraUnidadText;
+    // Convertir el string de areaTrabajo a un array de strings
+    dataToSend.areaTrabajo = dataToSend.areaTrabajo
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+
+    // Si "Otra" está seleccionado, reemplazarlo con el texto del input
+    if (dataToSend.vinculoPucv.includes("Otra")) {
+      dataToSend.vinculoPucv = dataToSend.vinculoPucv.filter(
+        (v) => v !== "Otra"
+      );
+      dataToSend.vinculoPucv = [...dataToSend.vinculoPucv, otraVinculoText];
     }
 
-    // Eliminar 'otraUnidadText' si no es parte del esquema del backend
-    // No lo enviaremos al backend ya que no es parte del modelo final.
-    // Aunque no está en formData, si lo tuvieras ahí lo eliminarías aquí.
-    // delete dataToSend.otraUnidad; // Esta línea ya no es necesaria si 'otraUnidad' se eliminó de formData.
+    // Convertir el valor de masInformacion a booleano
+    dataToSend.masInformacion = dataToSend.masInformacion === "si";
 
     setIsSubmitting(true);
     try {
-      console.log("Datos enviados al backend:", dataToSend); // Para depuración
+      console.log("Datos enviados al backend:", dataToSend);
       const response = await postInscripcionDesafio(dataToSend);
       setSubmitMessage({
         type: "success",
-        text: response.message || "¡Inscripción enviada con éxito!",
+        text: "¡Inscripción enviada con éxito!",
       });
-      // Limpiar el formulario después del éxito
       setFormData({
         nombre: "",
         apellido: "",
         correoElectronico: "",
-        unidadAcademica: "",
-        desafioInteres: [], // Limpiar como un array vacío
-        // capacidadesDesafio: "", // Ya no existe
+        nombreEmpresa: "",
+        areaTrabajo: "",
+        contactoWeb: "",
+        numeroTelefono: "",
+        actividadesServicios: "",
+        desafio1: "",
+        desafio2: "",
+        desafio3: "",
+        vinculoPucv: [],
+        masInformacion: "",
       });
-      setOtraUnidadText(""); // Limpiar también el estado del input "Otra..."
-      setTimeout(() => setSubmitMessage({ type: "", text: "" }), 5000);
+      setOtraVinculoText("");
+      // El scroll se activa 1 segundo después del envío exitoso
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }, 1000);
+
+      // El mensaje de éxito desaparece 5 segundos después del envío
+      setTimeout(() => {
+        setSubmitMessage({ type: "", text: "" });
+      }, 5000);
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       if (error.details) {
@@ -208,7 +237,7 @@ export default function DesafiosForm() {
       }
       setSubmitMessage({
         type: "error",
-        text: error.message || "Ocurrió un error al enviar la inscripción.",
+        text: "Lo sentimos. Ocurrió un error al enviar la inscripción. Inténtelo denuevo más tarde.",
       });
     } finally {
       setIsSubmitting(false);
@@ -250,34 +279,38 @@ export default function DesafiosForm() {
 
   return (
     <div className="bg-slate-100 py-8">
-      <Button
-        variant="outline"
+      <button
         onClick={() => {
           navigate(-1);
         }}
-        className="text-gray-600 ml-6 cursor-pointer font-bold hover:text-gray-800"
+        className="text-gray-600 flex ml-10 cursor-pointer font-bold hover:text-gray-800 px-6 py-3 rounded-full bg-white shadow-lg"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Volver
-      </Button>
+        <ArrowLeft className="mr-2 h-6 w-6" />
+        Regresar
+      </button>
       <div className="max-w-4xl mx-auto px-6">
-        <Card className="border-0 shadow-xl overflow-hidden">
-          <div className="relative h-32 bg-gradient-to-r from-blue-600 to-cyan-400">
-            <div className="absolute inset-0 bg-black/20"></div>
+        <Card className="border-0 shadow-lg overflow-hidden bg-white rounded-3xl pt-0">
+          <div
+            className="relative rounded-t-3xl py-12 bg-cover bg-center"
+            style={{ backgroundImage: `url(${fondoBanner})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-sky-500 opacity-30"></div>
             <div className="relative h-full flex items-center justify-center">
               <div className="text-center text-white">
-                <h1 className="text-3xl font-bold mb-2">
-                  Formulario de Inscripción
+                <h1 className="text-4xl font-black mb-2">
+                  Inscribe tu desafío tecnológico
                 </h1>
-                <p className="text-sm md:text-sm text-gray-100 mt-2 mx-auto max-w-2xl">
-                  ¿Te interesa participar? Inscríbete aquí para contactarte y
-                  conocer más sobre los desafíos.
-                </p>
+                <div className="bg-sky-600/50 backdrop-blur-sm rounded-full px-6 py-2 mt-3 mx-auto max-w-md">
+                  <p className="text-md text-sky-100 leading-tight">
+                    Conecta con estudiantes y académicos que pueden ayudarte a
+                    resolver tus desafíos de innovación.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <CardContent className="p-6">
+          <CardContent className="p-6 pt-0">
             {submitMessage.text && (
               <div
                 className={`p-4 mb-6 rounded-md ${
@@ -291,209 +324,373 @@ export default function DesafiosForm() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="nombre"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  <Users className="w-4 h-4" />
-                  Nombre <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="nombre"
-                  placeholder="Ingrese su nombre"
-                  value={formData.nombre}
-                  onChange={(e) => handleInputChange("nombre", e.target.value)}
-                  className={errors.nombre ? "border-red-500" : ""}
-                />
-                {errors.nombre && (
-                  <p className="text-red-500 text-xs">{errors.nombre}</p>
-                )}
+              {/* Personal Information Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                {/* Name */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="nombre"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Users className="w-4 h-4" />
+                    Nombre <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="nombre"
+                    placeholder="Ingrese su nombre"
+                    value={formData.nombre}
+                    onChange={(e) =>
+                      handleInputChange("nombre", e.target.value)
+                    }
+                    className={errors.nombre ? "border-red-500" : ""}
+                  />
+                  {errors.nombre && (
+                    <p className="text-red-500 text-xs">{errors.nombre}</p>
+                  )}
+                </div>
+
+                {/* Last Name */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="apellido"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Users className="w-4 h-4" />
+                    Apellido{" "}
+                    <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="apellido"
+                    placeholder="Ingrese su apellido"
+                    value={formData.apellido}
+                    onChange={(e) =>
+                      handleInputChange("apellido", e.target.value)
+                    }
+                    className={errors.apellido ? "border-red-500" : ""}
+                  />
+                  {errors.apellido && (
+                    <p className="text-red-500 text-xs">{errors.apellido}</p>
+                  )}
+                </div>
               </div>
 
-              {/* Last Name */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="apellido"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  <Users className="w-4 h-4" />
-                  Apellido <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="apellido"
-                  placeholder="Ingrese su apellido"
-                  value={formData.apellido}
-                  onChange={(e) =>
-                    handleInputChange("apellido", e.target.value)
-                  }
-                  className={errors.apellido ? "border-red-500" : ""}
-                />
-                {errors.apellido && (
-                  <p className="text-red-500 text-xs">{errors.apellido}</p>
-                )}
+              {/* Email & Phone Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="correoElectronico"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Correo electrónico{" "}
+                    <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="correoElectronico"
+                    type="email"
+                    placeholder="ejemplo@empresa.com"
+                    value={formData.correoElectronico}
+                    onChange={(e) =>
+                      handleInputChange("correoElectronico", e.target.value)
+                    }
+                    className={errors.correoElectronico ? "border-red-500" : ""}
+                  />
+                  {errors.correoElectronico && (
+                    <p className="text-red-500 text-xs">
+                      {errors.correoElectronico}
+                    </p>
+                  )}
+                </div>
+
+                {/* Phone Number */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="numeroTelefono"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Phone className="w-4 h-4" />
+                    Número de teléfono de contacto{" "}
+                    <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="numeroTelefono"
+                    type="tel"
+                    placeholder="912345678"
+                    value={formData.numeroTelefono}
+                    onChange={(e) =>
+                      handleInputChange("numeroTelefono", e.target.value)
+                    }
+                    className={errors.numeroTelefono ? "border-red-500" : ""}
+                  />
+                  {errors.numeroTelefono && (
+                    <p className="text-red-500 text-xs">
+                      {errors.numeroTelefono}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="correoElectronico"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4" />
-                  Correo electrónico <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="correoElectronico"
-                  type="email"
-                  placeholder="ejemplo@pucv.cl"
-                  value={formData.correoElectronico}
-                  onChange={(e) =>
-                    handleInputChange("correoElectronico", e.target.value)
-                  }
-                  className={errors.correoElectronico ? "border-red-500" : ""}
-                />
-                {errors.correoElectronico && (
-                  <p className="text-red-500 text-xs">
-                    {errors.correoElectronico}
-                  </p>
-                )}
+              {/* Full Width Fields */}
+              <div className="space-y-6">
+                {/* Company/Organization */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="nombreEmpresa"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    Empresa/Organización a la que pertenece{" "}
+                    <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="nombreEmpresa"
+                    placeholder="Nombre de la empresa u organización"
+                    value={formData.nombreEmpresa}
+                    onChange={(e) =>
+                      handleInputChange("nombreEmpresa", e.target.value)
+                    }
+                    className={errors.nombreEmpresa ? "border-red-500" : ""}
+                  />
+                  {errors.nombreEmpresa && (
+                    <p className="text-red-500 text-xs">
+                      {errors.nombreEmpresa}
+                    </p>
+                  )}
+                </div>
+
+                {/* Area de Trabajo */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="areaTrabajo"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Building2 className="w-4 h-4" />
+                    Área de trabajo de la Institución/Empresa a la que pertenece{" "}
+                    <span className="text-gray-500">(Obligatorio)</span>
+                  </Label>
+                  <Input
+                    id="areaTrabajo"
+                    placeholder="Ej. Tecnología, Manufactura, Servicios, etc."
+                    value={formData.areaTrabajo}
+                    onChange={(e) =>
+                      handleInputChange("areaTrabajo", e.target.value)
+                    }
+                    className={errors.areaTrabajo ? "border-red-500" : ""}
+                  />
+                  {errors.areaTrabajo && (
+                    <p className="text-red-500 text-xs">{errors.areaTrabajo}</p>
+                  )}
+                </div>
+
+                {/* Contacto/Website/Social Media */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="contactoWeb"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    <Link className="w-4 h-4" />
+                    Contacto/página web/redes sociales (Empresa){" "}
+                    <span className="text-gray-500">(Opcional)</span>
+                  </Label>
+                  <Input
+                    id="contactoWeb"
+                    placeholder="www.empresa.com o @empresa"
+                    value={formData.contactoWeb}
+                    onChange={(e) =>
+                      handleInputChange("contactoWeb", e.target.value)
+                    }
+                  />
+                </div>
               </div>
 
-              {/* Academic Unit (RadioGroup) */}
+              {/* Vínculo con la PUCV (Checkbox) */}
               <div className="space-y-4">
                 <Label className="text-sm font-medium flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  Unidad Académica <span className="text-red-500">*</span>
+                  ¿Ha tenido algún vínculo con la PUCV?{" "}
+                  <span className="text-gray-500">(Obligatorio)</span>
                 </Label>
-                <RadioGroup
-                  value={formData.unidadAcademica}
-                  onValueChange={(value) =>
-                    handleInputChange("unidadAcademica", value)
-                  }
-                  className="space-y-3"
-                >
-                  {unidadesAcademicas.map((unidad, index) => (
-                    <div key={index} className="flex items-center space-x-3">
-                      <RadioGroupItem value={unidad} id={`unidad-${index}`} />
+                <div className="space-y-3">
+                  {vinculosPucvOptions.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`vinculo-${index}`}
+                        checked={formData.vinculoPucv.includes(option.value)}
+                        onCheckedChange={(checked) =>
+                          handleCheckboxChange(option.value, checked)
+                        }
+                      />
                       <Label
-                        htmlFor={`unidad-${index}`}
-                        className="text-sm font-normal cursor-pointer flex-1"
+                        htmlFor={`vinculo-${index}`}
+                        className="text-sm font-normal"
                       >
-                        {unidad}
+                        {option.label}
                       </Label>
                     </div>
                   ))}
-                </RadioGroup>
-                {errors.unidadAcademica && (
-                  <p className="text-red-500 text-xs">
-                    {errors.unidadAcademica}
-                  </p>
+                </div>
+                {errors.vinculoPucv && (
+                  <p className="text-red-500 text-xs">{errors.vinculoPucv}</p>
                 )}
-
-                {/* Other Academic Unit Input */}
-                {formData.unidadAcademica === "Otra..." && (
+                {/* Other Vinculo Input */}
+                {formData.vinculoPucv.includes("Otra") && (
                   <div className="ml-6 space-y-2">
-                    <Label htmlFor="otraUnidad" className="text-sm font-medium">
-                      Especifique la unidad académica{" "}
-                      <span className="text-red-500">*</span>
+                    <Label
+                      htmlFor="otraVinculo"
+                      className="text-sm font-medium"
+                    >
+                      Especifique el vínculo{" "}
+                      <span className="text-gray-500">(Obligatorio)</span>
                     </Label>
                     <Input
-                      id="otraUnidad"
-                      placeholder="Ingrese el nombre de la unidad académica"
-                      value={otraUnidadText}
+                      id="otraVinculo"
+                      placeholder="Ingrese su vínculo con la PUCV"
+                      value={otraVinculoText}
                       onChange={(e) =>
-                        handleOtraUnidadTextChange(e.target.value)
+                        handleOtraVinculoTextChange(e.target.value)
                       }
-                      className={errors.unidadAcademica ? "border-red-500" : ""}
+                      className={errors.vinculoPucv ? "border-red-500" : ""}
                     />
                   </div>
                 )}
               </div>
 
-              {/* Desafíos de Interés (Checkboxes) */}
-              <div className="space-y-4">
-                <Label className="text-sm font-medium flex items-center gap-2">
-                  <ClipboardList className="w-4 h-4" />
-                  Desafío(s) de interés (puede escoger uno o más){" "}
-                  <span className="text-red-500">*</span>
+              {/* Keywords */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="actividadesServicios"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  Indique las principales actividades o linea (keywords) que
+                  describen las actividades que realiza su empresa o área de
+                  trabajo (puede ser conceptos o términos por los que podrían
+                  buscar los servicios que su empresa puede ofrecer){" "}
+                  <span className="text-gray-500">(Obligatorio)</span>
                 </Label>
-                <div className="space-y-3">
-                  {desafiosOptions.map((desafio, index) => (
-                    <div key={index} className="flex items-center space-x-3">
-                      <Checkbox
-                        id={`desafio-checkbox-${index}`}
-                        checked={formData.desafioInteres.includes(desafio)}
-                        onCheckedChange={(checked) =>
-                          handleInputChange(
-                            "desafioInteres",
-                            desafio, // Pasa el valor del desafío
-                            checked // Pasa si está chequeado o no
-                          )
-                        }
-                      />
-                      <Label
-                        htmlFor={`desafio-checkbox-${index}`}
-                        className="text-sm font-normal cursor-pointer flex-1"
-                      >
-                        {desafio}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-                {errors.desafioInteres && (
+                <Textarea
+                  id="actividadesServicios"
+                  placeholder="Ej. logística, transporte, sustentabilidad, energías renovables, eficiencia energética, automatización, minería, robótica, manufactura, procesos, biotecnología, alimentos, medicamentos, optimización, desarrollo de software, IA, ciberseguridad, transformación digital, entre otros"
+                  value={formData.actividadesServicios}
+                  onChange={(e) =>
+                    handleInputChange("actividadesServicios", e.target.value)
+                  }
+                  className={
+                    errors.actividadesServicios ? "border-red-500" : ""
+                  }
+                />
+                {errors.actividadesServicios && (
                   <p className="text-red-500 text-xs">
-                    {errors.desafioInteres}
+                    {errors.actividadesServicios}
                   </p>
                 )}
               </div>
 
-              {/* Sección de Formulario de Postulación (NUEVA SECCIÓN) */}
-              <div className="space-y-4 mt-8">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium flex items-center gap-2">
-                    <File className="w-4 h-4" />
-                    Descargar y completar el Formulario de Postulación
-                    (documento adjunto) <span className="text-red-500">*</span>
-                  </Label>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    El formulario debe ser enviado al correo electrónico{" "}
-                    <a
-                      href="mailto:openfin@pucv.cl"
-                      className="text-blue-600 hover:underline"
-                    >
-                      openfin@pucv.cl
-                    </a>{" "}
-                    con plazo máximo el viernes 29 de agosto de 2025.
-                  </p>
+              {/* Desafíos Section with a light blue background */}
+              <div className="space-y-4 p-4 rounded-lg bg-sky-50 border-sky-200 border">
+                <Label className="text-lg font-semibold flex items-center gap-2">
+                  Desafíos para Ingeniería PUCV{" "}
+                </Label>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Indica muy brevemente un máximo de 3 problemas, desafíos o
+                  áreas de colaboración que te gustaría explorar con Ingeniería
+                  PUCV.
+                </p>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="desafio1">
+                      Desafío/Problema o área de Colaboración N° 1{" "}
+                      <span className="text-gray-500">(Obligatorio)</span>
+                    </Label>
+                    <Textarea
+                      id="desafio1"
+                      placeholder="Describa el primer desafío o área de colaboración"
+                      value={formData.desafio1}
+                      onChange={(e) =>
+                        handleInputChange("desafio1", e.target.value)
+                      }
+                      className={errors.desafio1 ? "border-red-500" : ""}
+                    />
+                    {errors.desafio1 && (
+                      <p className="text-red-500 text-xs">{errors.desafio1}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="desafio2">
+                      Desafío/Problema o área de Colaboración N° 2
+                    </Label>
+                    <Textarea
+                      id="desafio2"
+                      placeholder="Describa el segundo desafío o área de colaboración"
+                      value={formData.desafio2}
+                      onChange={(e) =>
+                        handleInputChange("desafio2", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="desafio3">
+                      Desafío/Problema o área de Colaboración N° 3
+                    </Label>
+                    <Textarea
+                      id="desafio3"
+                      placeholder="Describa el tercer desafío o área de colaboración"
+                      value={formData.desafio3}
+                      onChange={(e) =>
+                        handleInputChange("desafio3", e.target.value)
+                      }
+                    />
+                  </div>
                 </div>
-                <a
-                  href="/archivos/POSTULACIÓN DESAFÍOS DE INGENIERÍA 2025 (11082025).docx" // Ruta del archivo DOCX
-                  download // Atributo para forzar la descarga
-                  className="inline-block"
+              </div>
+
+              {/* Más información (RadioGroup) */}
+              <div className="space-y-4">
+                <Label className="text-sm font-medium flex items-center gap-2">
+                  <MessageCircle className="w-6 h-6" />
+                  ¿Desea recibir más información sobre actividades relacionadas
+                  a colaboración entre Empresas, Organizaciones y la PUCV?{" "}
+                  <span className="text-gray-500">(Obligatorio)</span>
+                </Label>
+                <RadioGroup
+                  value={formData.masInformacion}
+                  onValueChange={(value) =>
+                    handleInputChange("masInformacion", value)
+                  }
+                  className="space-y-3"
                 >
-                  <Button
-                    variant="outline"
-                    className="w-full cursor-pointer sm:w-auto px-6 py-2 text-md"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Descargar Formulario
-                  </Button>
-                </a>
+                  {masInformacionOptions.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-3">
+                      <RadioGroupItem
+                        value={option.value}
+                        id={`info-${index}`}
+                      />
+                      <Label
+                        htmlFor={`info-${index}`}
+                        className="text-sm font-normal cursor-pointer flex-1"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+                {errors.masInformacion && (
+                  <p className="text-red-500 text-xs">
+                    {errors.masInformacion}
+                  </p>
+                )}
               </div>
 
               {/* Submit Button */}
               <div className="pt-6">
                 <Button
                   type="submit"
-                  className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-3 text-lg"
+                  className="w-full cursor-pointer bg-gradient-to-r from-sky-800 to-sky-500 hover:from-sky-700 text-white font-semibold py-3 text-lg"
                   disabled={isSubmitting || submitMessage.type === "success"}
                 >
                   {getButtonContent()}
                 </Button>
                 {submitMessage.type === "success" && (
-                  <p className="text-green-600 text-sm font-semibold mt-2 text-center">
+                  <p className="text-green-600 text-md font-semibold mt-2 text-center">
                     La inscripción ha sido enviada con éxito.
                   </p>
                 )}
