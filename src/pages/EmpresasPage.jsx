@@ -173,7 +173,7 @@ export default function EmpresasPage() {
                 </p>
                 <div className="inline-flex items-center justify-center bg-white rounded-full shadow-lg font-semibold text-sky-600">
                   <span className="py-2.5 px-6 text-base">
-                    {isCopied ? "¡Copiado!" : "openfin@ing.pucv.cl"}
+                    {isCopied ? "¡Copiado al portapapeles!" : "openfin@ing.pucv.cl"}
                   </span>
                   <button
                     onClick={handleCopyClick}
