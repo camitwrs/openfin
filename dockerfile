@@ -30,12 +30,12 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY package.json bun.lockb ./
 
-# Instala solo las dependencias de producción (en este caso, sirv-cli).
+# Instala solo las dependencias de producción (en este caso, serve).
 RUN bun install --prod
 
-# Exponemos el puerto en el que sirv-cli servirá la aplicación.
+# Exponemos el puerto en el que serve servirá la aplicación.
 EXPOSE 3000
 
 # Define el comando que se ejecutará al iniciar el contenedor.
-# Usamos `sirv` directamente para asegurarnos de que el flag `--single` se use.
-CMD ["sirv", "dist", "--no-clear", "--single"]
+# Usamos `serve` directamente con el flag `-s` para asegurarnos de que el modo SPA se use.
+CMD ["serve", "dist", "-s"]
