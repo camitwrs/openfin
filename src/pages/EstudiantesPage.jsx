@@ -1,262 +1,153 @@
+import React from "react";
 import {
-  Building2,
-  Lightbulb,
   GraduationCap,
-  ArrowRight,
-  Users,
-  BookOpen,
+  Sparkles,
+  Zap,
   Briefcase,
+  Users,
+  FlaskConical,
+  ArrowRight,
 } from "lucide-react";
+// Asegúrate de que estas rutas sean correctas en tu proyecto
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom"; // Importamos useNavigate
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
-export default function EstudiantesPage() {
-  const navigate = useNavigate();
+// Datos de las actividades dirigidas a estudiantes
+const studentActivities = [
+  {
+    title: "Academias I+D",
+    description:
+      "Programas intensivos para el desarrollo de habilidades en Investigación y Desarrollo (I+D), enfocados en la innovación tecnológica.",
+    icon: <FlaskConical className="w-8 h-8 text-cyan-600" />,
+    link: "/estudiantes/academia-id",
+    badge: "Investigación",
+  },
+  {
+    title: "Academia EBCT",
+    description:
+      "Formación especializada en Emprendimiento de Base Científico Tecnológica, transformando ideas innovadoras en startups viables.",
+    icon: <Zap className="w-8 h-8 text-cyan-600" />,
+    link: "/estudiantes/academia-ebct",
+    badge: "Emprendimiento",
+  },
+  {
+    title: "Venture Studio",
+    description:
+      "Plataforma de co-creación y lanzamiento de empresas, donde el talento universitario colabora directamente con la industria.",
+    icon: <Briefcase className="w-8 h-8 text-cyan-600" />,
+    link: "/estudiantes/venture-studio",
+    badge: "Innovación",
+  },
+  {
+    title: "Conecta Industria",
+    description:
+      "Eventos de networking y ferias de oportunidades que vinculan directamente a estudiantes con empresas en busca de talento especializado.",
+    icon: <Users className="w-8 h-8 text-cyan-600" />,
+    link: "/estudiantes/conecta-talento",
+    badge: "Vinculación",
+  },
+];
 
-  const academicPaths = [
-    {
-      title: "Connecta Industria",
-      subtitle: "Conecta con el Mundo Empresarial",
-      description:
-        "Descubre oportunidades de prácticas, empleos y proyectos colaborativos con empresas líderes en tu área de estudio.",
-      icon: Building2,
-      path: "/estudiantes/connecta-industria",
-      gradient: "from-blue-500 to-blue-600",
-      features: [
-        "Prácticas Profesionales",
-        "Ofertas de Empleo",
-        "Proyectos Empresariales",
-      ],
-      decorativeIcon: Briefcase,
-    },
-    {
-      title: "Academia I+D",
-      subtitle: "Investigación y Desarrollo",
-      description:
-        "Participa en proyectos de investigación, desarrolla tu tesis y colabora con grupos de investigación de vanguardia.",
-      icon: Lightbulb,
-      path: "/estudiantes/academia-id", // Asegura que la ruta sea correcta
-      gradient: "from-purple-500 to-purple-600",
-      features: [
-        "Proyectos de Investigación",
-        "Temas de Tesis",
-        "Grupos de I+D",
-      ],
-      decorativeIcon: BookOpen,
-    },
-    {
-      title: "Academia EBCT",
-      subtitle: "Empresas de Base Científico-Tecnológica",
-      description:
-        "Explora el ecosistema de startups tecnológicas y empresas de base científica para impulsar tu carrera profesional.",
-      icon: GraduationCap,
-      path: "/estudiantes/academia-ebct", // Asegura que la ruta sea correcta
-      gradient: "from-cyan-500 to-cyan-600",
-      features: [
-        "Startups Tecnológicas",
-        "Innovación Aplicada",
-        "Emprendimiento",
-      ],
-      decorativeIcon: Users,
-    },
-  ];
-
-  const handlePathClick = (path) => {
-    if (path) {
-      navigate(path);
-    }
-  };
-
+const EstudiantesPage = () => {
   return (
-    <div className="bg-slate-100 py-8">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Background decoration - reduje tamaños y traslaciones */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-72 h-72 bg-blue-100/30 rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-100/20 rounded-full translate-y-24 -translate-x-24"></div>
-          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-purple-100/20 rounded-full -translate-x-12 -translate-y-12"></div>
+    <div className="min-h-screen bg-slate-50">
+      {/* Sección Hero para Estudiantes */}
+      <section className="relative pt-24 pb-16 bg-gradient-to-r from-cyan-50 to-cyan-100 border-b border-cyan-200/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <GraduationCap className="w-12 h-12 mx-auto text-cyan-700 mb-4 animate-bounce-slow" />
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-cyan-900 mb-4 tracking-tight">
+            Despega tu Carrera
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-700 max-w-3xl mx-auto mb-8 font-medium">
+            Accede a las mejores oportunidades de{" "}
+            <strong>I+D, Emprendimiento e Innovación</strong> que conectan a la
+            universidad con el sector productivo.
+          </p>
+
+          
         </div>
+      </section>
 
-        <div className="relative max-w-7xl mx-auto px-4 py-10">
-          {/* Header */}
-          <div className="text-center mb-10">
-            {" "}
-            {/* Reduje el margen */}
-            <h1 className="text-4xl lg:text-5xl font-bold text-blue-900 mb-4">
-              {" "}
-              {/* Reduje el tamaño y margen */}
-              Estudiantes
-            </h1>
-            <div className="w-24 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto mb-6"></div>{" "}
-            {/* Reduje tamaño y margen */}
-            <p className="text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              {" "}
-              {/* Reduje tamaño */}
-              Tu puerta de entrada al mundo profesional y académico. Explora
-              oportunidades que transformarán tu futuro.
-            </p>
-          </div>
+      {/* Sección de Actividades Visibles */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-cyan-900 mb-12">
+            Actividades para Estudiantes
+          </h2>
 
-          {/* Academic Paths Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {" "}
-            {/* Reduje el gap */}
-            {academicPaths.map((path, index) => {
-              const IconComponent = path.icon;
-              const DecorativeIcon = path.decorativeIcon;
-
-              return (
-                <Card
-                  key={index}
-                  className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-0 overflow-hidden bg-white"
-                  onClick={() => handlePathClick(path.path)}
-                >
-                  {/* Header Section with Gradient */}
-                  <div
-                    className={`relative h-40 bg-gradient-to-br ${path.gradient} overflow-hidden`}
-                  >
-                    {" "}
-                    {/* Reduje la altura */}
-                    {/* Geometric Pattern Background - Mantuve el mismo tamaño relativo */}
-                    <div className="absolute inset-0 opacity-20">
-                      <svg
-                        className="w-full h-full"
-                        viewBox="0 0 400 200"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0 100C50 50 100 150 150 100C200 50 250 150 300 100C350 50 400 150 400 100"
-                          stroke="white"
-                          strokeWidth="2"
-                          opacity="0.3"
-                        />
-                        <path
-                          d="M0 120C50 70 100 170 150 120C200 70 250 170 300 120C350 70 400 170 400 120"
-                          stroke="white"
-                          strokeWidth="1"
-                          opacity="0.2"
-                        />
-                        <circle
-                          cx="100"
-                          cy="100"
-                          r="30"
-                          stroke="white"
-                          strokeWidth="1"
-                          opacity="0.2"
-                          fill="none"
-                        />
-                        <circle
-                          cx="300"
-                          cy="100"
-                          r="20"
-                          stroke="white"
-                          strokeWidth="1"
-                          opacity="0.3"
-                          fill="none"
-                        />
-                      </svg>
+          {/* Grid de Actividades */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {studentActivities.map((activity, index) => (
+              <Card
+                key={index}
+                className="hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border-b-4 border-cyan-500/80"
+              >
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 rounded-full bg-cyan-100/50 shadow-inner">
+                      {activity.icon}
                     </div>
-                    {/* Main Icon */}
-                    <div className="absolute top-4 left-4">
-                      {" "}
-                      {/* Reduje la posición */}
-                      <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
-                        <IconComponent className="w-5 h-5 text-white" />{" "}
-                        {/* Reduje el tamaño del icono */}
-                      </div>
-                    </div>
-                    {/* Decorative Icon */}
-                    <div className="absolute top-4 right-4">
-                      {" "}
-                      {/* Reduje la posición */}
-                      <DecorativeIcon className="w-6 h-6 text-white/40 group-hover:text-white/60 transition-colors duration-300" />{" "}
-                      {/* Reduje el tamaño del icono */}
-                    </div>
-                    {/* Title */}
-                    <div className="absolute bottom-4 left-4">
-                      {" "}
-                      {/* Reduje la posición */}
-                      <h3 className="text-xl font-bold text-white mb-0.5">
-                        {" "}
-                        {/* Reduje el tamaño y margen */}
-                        {path.title}
-                      </h3>
-                      <p className="text-white/80 text-xs font-medium">
-                        {" "}
-                        {/* Reduje el tamaño */}
-                        {path.subtitle}
-                      </p>
-                    </div>
+                    <Badge className="bg-cyan-500/10 text-cyan-800 font-semibold">
+                      {activity.badge}
+                    </Badge>
                   </div>
 
-                  {/* Content Section */}
-                  <CardContent className="p-4">
-                    {" "}
-                    {/* Reduje el padding */}
-                    <p className="text-slate-600 leading-relaxed mb-4 text-sm">
-                      {" "}
-                      {/* Reduje tamaño y margen */}
-                      {path.description}
-                    </p>
-                    {/* Features List */}
-                    <div className="space-y-2 mb-4">
-                      {" "}
-                      {/* Reduje espaciado y margen */}
-                      {path.features.map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center text-xs text-slate-600" // Reduje tamaño
-                        >
-                          <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mr-2 flex-shrink-0"></div>{" "}
-                          {/* Reduje tamaño y margen */}
-                          <span className="font-medium">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {/* Action Button */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-blue-600 group-hover:text-blue-700 font-semibold transition-colors text-sm">
-                        {" "}
-                        {/* Reduje tamaño */}
-                        <span className="mr-1.5">Explorar</span>{" "}
-                        {/* Reduje margen */}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />{" "}
-                        {/* Reduje tamaño del icono */}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                  <h3 className="text-xl font-bold text-cyan-900 mb-3">
+                    {activity.title}
+                  </h3>
 
-          {/* Bottom CTA Section */}
-          <div className="text-center mt-12">
-            {" "}
-            {/* Reduje margen */}
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mb-4">
-              {" "}
-              {/* Reduje tamaño y margen */}
-              <GraduationCap className="w-6 h-6 text-white" />{" "}
-              {/* Reduje tamaño del icono */}
-            </div>
-            <h2 className="text-xl font-bold text-slate-800 mb-2">
-              {" "}
-              {/* Reduje tamaño y margen */}
-              ¿Listo para comenzar tu journey académico?
-            </h2>
-            <p className="text-slate-600 text-sm max-w-2xl mx-auto">
-              {" "}
-              {/* Reduje tamaño */}
-              Cada camino te ofrece oportunidades únicas para crecer
-              profesionalmente y contribuir al avance del conocimiento.
-            </p>
+                  <p className="text-gray-600 flex-grow mb-4">
+                    {activity.description}
+                  </p>
+
+                  {/* Botón de Enlace */}
+                  <Button
+                    asChild
+                    variant="link"
+                    className="text-cyan-600 font-semibold p-0 h-auto self-start hover:text-cyan-700"
+                  >
+                    <Link to={activity.link}>
+                      Explorar Actividad
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Sección de Contacto Rápido */}
+      <section className="py-10 bg-cyan-600 mb-8">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <div className="flex justify-center items-center mb-4">
+            <Users className="w-10 h-10 text-white mr-3" />
+            <h3 className="text-2xl font-bold text-white">
+             ¿Necesitas más información?
+            </h3>
+          </div>
+          <p className="text-gray-100 text-md max-w-2xl mx-auto">
+            ¿Tienes dudas sobre cómo participar o qué actividad es ideal para tu
+            perfil?
+          </p>
+          <p className="text-gray-100 font-bold text-lg mb-6 max-w-2xl mx-auto uppercase">
+            Contáctanos.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="bg-white text-cyan-800 hover:bg-gray-100 transition-all duration-300 shadow-xl rounded-full px-8 py-3 text-base font-semibold"
+          >
+            <Link to="mailto:openfin@ing.pucv.cl">openfin@ing.pucv.cl</Link>
+          </Button>
+        </div>
+      </section>
     </div>
   );
-}
+};
+
+export default EstudiantesPage;

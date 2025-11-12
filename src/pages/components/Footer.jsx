@@ -22,6 +22,7 @@ import apoyaINES from "../../assets/ines-blanco.png"; // LOGO INES+D
 import apoyaANID from "../../assets/anid-blanco.png"; // LOGO ANID
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
   // Define tus grupos de logos con sus imágenes Y AHORA SUS LINKS
   const sections = [
     {
@@ -128,6 +129,14 @@ function Footer() {
             </div>
           </div>
         ))}
+
+        {/* Separador */}
+        <div className="border-t border-white/30 pt-4 mt-4"></div>
+
+        {/* Sección de Copyright */}
+        <p className="text-sm tracking-widest text-white/80 mt-4">
+          &copy; {currentYear} 
+        </p>
       </div>
     </footer>
   );

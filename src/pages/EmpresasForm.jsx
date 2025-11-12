@@ -182,7 +182,7 @@ export default function EmpresasForm({ onSubmit }) {
   };
 
   return (
-    <div className="bg-slate-100 py-8">
+    <div className="bg-slate-50 py-8">
       <div className="max-w-4xl mx-auto px-6">
         {/* Contenedor Único del Formulario y Encabezado */}
         <Card className="border-0 shadow-xl overflow-hidden">

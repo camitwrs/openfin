@@ -83,7 +83,7 @@ export default function EmpresasPage() {
   };
 
   return (
-    <div className="bg-slate-100 min-h-screen">
+    <div className="bg-slate-50 min-h-screen">
       {/* Sección Hero con la imagen de fondo */}
       <div
         className="relative min-h-[60vh] bg-cover bg-center py-20 md:py-32 flex items-center justify-center text-center"
@@ -156,7 +156,7 @@ export default function EmpresasPage() {
         </div>
 
         {/* Sección "Más información" */}
-        <div className="my-12 px-4 max-w-7xl mx-auto">
+        <div className=" px-4 max-w-7xl mx-auto">
           <Card className="bg-gradient-to-r from-sky-600 to-cyan-600 text-white border-0 shadow-xl">
             <CardContent className="p-6 text-center relative overflow-hidden">
               <div className="absolute top-0 left-0 w-24 h-24 bg-white/5 rounded-full -translate-y-12 -translate-x-12"></div>
@@ -173,11 +173,13 @@ export default function EmpresasPage() {
                 </p>
                 <div className="inline-flex items-center justify-center bg-white rounded-full shadow-lg font-semibold text-sky-600">
                   <span className="py-2.5 px-6 text-base">
-                    {isCopied ? "¡Copiado al portapapeles!" : "openfin@ing.pucv.cl"}
+                    {isCopied
+                      ? "¡Copiado al portapapeles!"
+                      : "openfin@ing.pucv.cl"}
                   </span>
                   <button
                     onClick={handleCopyClick}
-                    className="cursor-pointer bg-slate-100 hover:bg-slate-200 p-2.5 rounded-full text-sky-600"
+                    className="cursor-pointer bg-slate-50 hover:bg-slate-200 p-2.5 rounded-full text-sky-600"
                   >
                     <ClipboardList className="w-5 h-5" />
                   </button>

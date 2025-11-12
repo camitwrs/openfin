@@ -50,7 +50,7 @@ export default function AcademicosPage() {
   };
 
   return (
-    <div className="bg-slate-100 py-8">
+    <div className="bg-slate-50 py-8">
       {/* Header Section */}
       <div className="relative overflow-hidden">
         {/* Background decoration - Reduje tamaños y traslaciones */}

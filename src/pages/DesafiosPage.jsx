@@ -1,6 +1,3 @@
-// src/pages/DesafiosPage.jsx
-// React-Vite App
-
 import {
   ArrowRight,
   Mail,
@@ -76,8 +73,6 @@ const Timeline = ({ timelineItems }) => {
 export default function DesafiosPage() {
   const navigate = useNavigate();
 
-  // ------ Estado para controlar la visibilidad del banner -----
-  const [showBanner, setShowBanner] = useState(true);
   // Referencia para la sección de inscripción para hacer scroll
   const inscripcionRef = useRef(null);
 
@@ -97,17 +92,6 @@ export default function DesafiosPage() {
       });
     }
   };
-
-  // ----- Lógica para verificar la fecha de con useEffect -----
-  useEffect(() => {
-    const today = new Date();
-    // La fecha límite es el 5 de septiembre. El banner debe desaparecer el 6 de septiembre.
-    const deadline = new Date("2025-09-06T00:00:00");
-
-    if (today >= deadline) {
-      setShowBanner(false);
-    }
-  }, []);
 
   // Array de servicios/desafíos con sus detalles
   const services = [
@@ -263,24 +247,11 @@ export default function DesafiosPage() {
 
   return (
     <div className="bg-slate-50 pt-16 pb-6">
-      {/* ----- Renderizado condicional del banner ----- */}
-      {showBanner && (
-        <div className="bg-sky-600 text-white text-center font-bold py-4 mb-2 flex flex-col sm:flex-row justify-center items-center gap-4 px-4">
-          <span>¡NUEVA FECHA! Postulaciones hasta el 5 de Septiembre.</span>
-          <Button
-            onClick={scrollToInscripcion}
-            className="bg-white text-sky-600 hover:bg-slate-100 font-bold px-4 py-2 rounded-lg shadow-md cursor-pointer transition-all duration-300 text-xs sm:text-sm hover:scale-105"
-          >
-            Llevame allí
-            <ArrowDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )}
       <div className="relative">
         <div className="relative max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-center lg:items-start text-center lg:text-left">
             <div className="mb-8 lg:mb-0 lg:col-span-2">
-              <h1 className="text-4xl md:text-5xl lg:text-4xl font-extrabold text-sky-900 mb-4 leading-tight">
+              <h1 className="text-5xl font-extrabold text-cyan-900 mb-6 tracking-tight">
                 Desafíos de Ingeniería PUCV
               </h1>
               <div className="w-24 h-0.5 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-full mx-auto lg:mx-0 mb-6"></div>

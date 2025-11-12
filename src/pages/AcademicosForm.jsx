@@ -160,7 +160,7 @@ export default function AcademicosForm({ onSubmit }) {
   };
 
   return (
-    <div className="bg-slate-100 py-8">
+    <div className="bg-slate-50 py-8">
       <div className="max-w-4xl mx-auto px-6">
         <Card className="border-0 shadow-xl overflow-hidden">
           <div className="relative h-32 bg-gradient-to-r from-orange-500 via-blue-600 to-teal-600">

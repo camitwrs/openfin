@@ -278,7 +278,7 @@ export default function DesafiosForm() {
   };
 
   return (
-    <div className="bg-slate-100 py-8">
+    <div className="bg-slate-50 py-8">
       <button
         onClick={() => {
           navigate(-1);
