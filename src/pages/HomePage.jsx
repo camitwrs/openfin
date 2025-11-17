@@ -326,7 +326,7 @@ export default function Home() {
               soluciones concretas y de alto impacto.
             </p>
 
-            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-10 w-full max-w-3xl px-4">
+            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-16 md:mt-10 w-full max-w-3xl px-4">
               <Button
                 size="lg"
                 className="w-full md:w-auto xl:w-64 bg-gradient-to-r from-cyan-500/90 to-cyan-600/80 hover:from-cyan-400 hover:to-cyan-500 text-white backdrop-blur-sm rounded-full px-8 py-6 text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
@@ -368,7 +368,7 @@ export default function Home() {
           {/* Flecha de Scroll Animada */}
           <button
             onClick={scrollToContent}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce-slow cursor-pointer group"
+            className="absolute bottom-2 sm:bottom-4 md:bottom-6 lg:bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce-slow cursor-pointer group hidden md:block"
             aria-label="Scroll hacia abajo"
           >
             <div className="flex flex-col items-center gap-2">
@@ -511,13 +511,7 @@ export default function Home() {
                     />
 
                     {/* Overlay con gradiente más oscuro */}
-                    <div
-                      className={`absolute inset-0 ${
-                        index === 0
-                          ? "bg-gradient-to-t from-black/40 via-black/70 to-black/40"
-                          : "bg-gradient-to-t from-black/70 via-black/60 to-black/70"
-                      }`}
-                    ></div>
+                    <div className="absolute inset-0 bg-black/50"></div>
 
                     {/* Contenido */}
                     <div className="relative h-full p-5 md:p-6 pb-6 md:pb-8 flex flex-col justify-between">

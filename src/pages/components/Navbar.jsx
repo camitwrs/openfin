@@ -43,7 +43,7 @@ export default function Navbar() {
       isDropdown: true,
       subItems: [
         { label: "Noticias", to: "/actividades/noticias" },
-        { label: "Calendario de actividades", to: "/actividades/calendario" },
+        { label: "Calendario", to: "/actividades/calendario" },
       ],
     },
     {
@@ -53,8 +53,8 @@ export default function Navbar() {
       desc: "",
       isDropdown: true,
       subItems: [
-        { label: "Desafíos vigentes (Ing. PUCV)", to: "/desafios/vigentes" },
-        { label: "Desafíos en curso (Adjudicados)", to: "/desafios/en-curso" },
+        { label: "Desafíos vigentes", to: "/desafios/vigentes" },
+        { label: "Desafíos en curso", to: "/desafios/en-curso" },
       ],
     },
     {
@@ -67,13 +67,20 @@ export default function Navbar() {
         { label: "Academia I+D", to: "/estudiantes/academia-id" },
         { label: "Academia EBCT", to: "/estudiantes/academia-ebct" },
         { label: "Venture Studio", to: "/estudiantes/venture-studio" },
-        { label: "Conecta Industria", to: "/estudiantes/conecta-talento" },
+        { label: "Conecta Talento", to: "/estudiantes/conecta-talento" },
       ],
     },
     {
       to: "/empresas",
       icon: Building2,
       label: "Empresas",
+      desc: "",
+      isDropdown: false,
+    },
+    {
+      to: "/academicos",
+      icon: BookOpen,
+      label: "Académicos",
       desc: "",
       isDropdown: false,
     },
@@ -133,18 +140,19 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
                 {/* Usa el nuevo DropdownMenuContent estilizado */}
                 <DropdownMenuContent className="p-1">
-                  {/* Condición para excluir "Ver todo en Actividades" */}
-                  {item.label !== "Actividades" && (
-                    <Link
-                      key={item.to + "-all"}
-                      to={item.to}
-                      onClick={closeSheet}
-                    >
-                      <DropdownMenuItem className="font-bold text-sky-700 hover:bg-sky-100/70">
-                        Ver todo en {item.label}
-                      </DropdownMenuItem>
-                    </Link>
-                  )}
+                  {/* Condición para excluir "Ver todo en Actividades" y "Ver todo en Desafíos" */}
+                  {item.label !== "Actividades" &&
+                    item.label !== "Desafíos" && (
+                      <Link
+                        key={item.to + "-all"}
+                        to={item.to}
+                        onClick={closeSheet}
+                      >
+                        <DropdownMenuItem className="font-bold text-sky-700 hover:bg-sky-100/70">
+                          Ver todo en {item.label}
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
                   {item.subItems.map((subItem) => (
                     <Link key={subItem.to} to={subItem.to} onClick={closeSheet}>
                       <DropdownMenuItem className="font-semibold text-sky-700 hover:bg-sky-100/70">

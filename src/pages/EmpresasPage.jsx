@@ -20,47 +20,55 @@ import { useState } from "react";
 // Importa la imagen de fondo que enviaste
 import heroBackground from "../assets/banner-empresas-2.webp";
 
-// Datos para la sección de servicios (tarjetas)
-const services = [
-  {
-    title: "PRACTICANTES",
-    description:
-      "Conecta con estudiantes talentosos para prácticas profesionales",
-    icon: <Users className="w-10 h-10" />,
-    gradient: "from-slate-100 to-slate-50",
-  },
-  {
-    title: "TESISTAS",
-    description: "Encuentra estudiantes para desarrollar proyectos de tesis.",
-    icon: <Trophy className="w-10 h-10 " />,
-    gradient: "from-slate-100 to-slate-50",
-  },
-  {
-    title: "SOLUCIONES",
-    description: "Desarrolla soluciones innovadoras con la academia",
-    icon: <Lightbulb className="w-10 h-10 " />,
-    gradient: "from-slate-100 to-slate-50",
-  },
-];
+// const features = [
+//   {
+//     title: "Innovación Abierta",
+//     description:
+//       "Participa en un ecosistema de innovación que fomenta la colaboración y el intercambio de ideas.",
+//     icon: <Zap className="w-8 h-8 text-sky-600" />,
+//   },
+//   {
+//     title: "Desafíos Reales",
+//     description:
+//       "Aborda problemáticas auténticas de la industria y desarrolla soluciones con impacto.",
+//     icon: <Target className="w-8 h-8 text-sky-600" />,
+//   },
+//   {
+//     title: "Ecosistema Tecnológico",
+//     description:
+//       "Interactúa con la academia para acceder a conocimientos de vanguardia y tecnologías emergentes.",
+//     icon: <Building2 className="w-8 h-8 text-sky-600" />,
+//   },
+// ];
 
-const features = [
+const vinculacionActivities = [
   {
-    title: "Innovación Abierta",
+    title: "Apoyos FIN",
     description:
-      "Participa en un ecosistema de innovación que fomenta la colaboración y el intercambio de ideas.",
-    icon: <Zap className="w-8 h-8 text-sky-600" />,
+      "Accede a financiamientos y apoyos para proyectos de innovación tecnológica.",
+    icon: <Trophy className="w-8 h-8 text-sky-600" />,
+    link: "/apoyos-fin",
   },
   {
-    title: "Desafíos Reales",
+    title: "Empresas Asociadas",
     description:
-      "Aborda problemáticas auténticas de la industria y desarrolla soluciones con impacto.",
-    icon: <Target className="w-8 h-8 text-sky-600" />,
-  },
-  {
-    title: "Ecosistema Tecnológico",
-    description:
-      "Interactúa con la academia para acceder a conocimientos de vanguardia y tecnologías emergentes.",
+      "Únete a nuestra red de empresas asociadas y colabora en proyectos conjuntos.",
     icon: <Building2 className="w-8 h-8 text-sky-600" />,
+    link: "/empresas-asociadas",
+  },
+  {
+    title: "MatchUp",
+    description:
+      "Encuentra el talento ideal para tus proyectos a través de nuestro sistema de matchmaking.",
+    icon: <Users className="w-8 h-8 text-sky-600" />,
+    link: "/matchup",
+  },
+  {
+    title: "Inscribe tu Empresa",
+    description:
+      "Registra tu empresa y accede a oportunidades de colaboración con la academia.",
+    icon: <NotebookPen className="w-8 h-8 text-sky-600" />,
+    link: "/inscribe-empresa",
   },
 ];
 
@@ -113,7 +121,7 @@ export default function EmpresasPage() {
 
       {/* Secciones de servicios y características */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {services.map((service, index) => (
             <Card
               key={index}
@@ -153,14 +161,52 @@ export default function EmpresasPage() {
               </div>
             );
           })}
+        </div> */}
+
+        {/* Sección de Actividades de Vinculación */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-center text-sky-800 mb-8">
+            Actividades de Vinculación
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {vinculacionActivities.map((activity, index) => (
+              <Card
+                key={index}
+                className="bg-white shadow-lg border border-gray-200 hover:shadow-xl transition-shadow"
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-sky-100 rounded-full mb-4">
+                    {activity.icon}
+                  </div>
+                  <h3 className="text-lg font-bold text-sky-800 mb-2">
+                    {activity.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {activity.description}
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-sky-600 text-sky-600 hover:bg-sky-50"
+                  >
+                    <Link to={activity.link}>
+                      Más Información
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Sección "Más información" */}
-        <div className=" px-4 max-w-7xl mx-auto">
-          <Card className="bg-gradient-to-r from-sky-600 to-cyan-600 text-white border-0 shadow-xl">
-            <CardContent className="p-6 text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-24 h-24 bg-white/5 rounded-full -translate-y-12 -translate-x-12"></div>
-              <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 translate-x-8"></div>
+       
+      </div>
+       {/* Sección "Más información" */}
+        <div className="w-full mb-4">
+          <Card className="bg-gradient-to-r from-sky-600 to-cyan-600 text-white border-0 shadow-xl rounded-none">
+            <CardContent className="p-6 text-center relative overflow-hidden max-w-7xl mx-auto">
+             
               <div className="relative z-10">
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-white/20 rounded-full mb-4">
                   <Mail className="w-7 h-7" />
@@ -188,7 +234,6 @@ export default function EmpresasPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
     </div>
   );
 }

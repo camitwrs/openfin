@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,10 +19,6 @@ import {
 } from "lucide-react";
 
 export default function VentureStudioPage() {
-  // Hook para asegurar que la página siempre comience arriba al montarse
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <div className="min-h-screen bg-white">
       {/* cyan notification bar
@@ -48,7 +43,7 @@ export default function VentureStudioPage() {
                 <Rocket className="w-4 h-4 mr-2" />
                 Venture Studio PUCV
               </div>
-              <h1 className="text-5xl font-extrabold text-cyan-900 mb-6 tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-cyan-900 mb-6 tracking-tight">
                 Construye tu startup desde cero con apoyo experto
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
@@ -324,8 +319,6 @@ export default function VentureStudioPage() {
           </div>
         </div>
       </section>
-
-    
 
       {/* Requisitos y postulación */}
       <section className="py-16 bg-white">

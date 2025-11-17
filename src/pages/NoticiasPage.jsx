@@ -17,7 +17,6 @@ import {
   Filter,
   ArrowLeft,
 } from "lucide-react";
-import { useEffect } from "react";
 
 // ============================================
 // DATOS DE NOTICIAS - Modificar aquí para actualizar contenido
@@ -117,9 +116,6 @@ const newsArticles = [
 ];
 
 export default function NoticiasPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   // Helper function para obtener el icono correcto
   const getIcon = (iconName) => {
     switch (iconName) {
@@ -141,13 +137,9 @@ export default function NoticiasPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <Newspaper className="w-4 h-4 mr-2" />
-              Noticias OPENFIN
-            </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight text-balance">
-              Últimas Noticias del Ecosistema
+          <div className="max-w-7xl mx-auto mt-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl   font-extrabold text-gray-900 mb-6 leading-tight text-balance">
+              Últimas Noticias y Novedades
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
               Descubre las novedades, logros y anuncios más recientes del
@@ -160,91 +152,93 @@ export default function NoticiasPage() {
       {/* Noticias Section */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          {/* Featured News */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Noticia destacada
-            </h2>
-            <Card className="overflow-hidden border-2 border-blue-100 hover:shadow-2xl transition-shadow">
-              <div className="grid md:grid-cols-2 gap-0">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-12 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <Newspaper className="w-20 h-20 mx-auto mb-4 opacity-80" />
-                    <p className="text-sm font-semibold opacity-90">
-                      Imagen destacada
-                    </p>
+          <div className="max-w-7xl mx-auto">
+            {/* Featured News */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                Noticia destacada
+              </h2>
+              <Card className="overflow-hidden border-2 border-blue-100 hover:shadow-2xl transition-shadow">
+                <div className="grid md:grid-cols-2 gap-0">
+                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-12 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <Newspaper className="w-20 h-20 mx-auto mb-4 opacity-80" />
+                      <p className="text-sm font-semibold opacity-90">
+                        Imagen destacada
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="p-8 flex flex-col justify-center">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-semibold">
-                      {featuredNews.category}
-                    </span>
-                    <span className="text-gray-500 text-sm">
-                      {featuredNews.date}
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
-                    {featuredNews.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {featuredNews.description}
-                  </p>
-                  <div className="flex items-center space-x-4">
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                      Leer más
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                    <Button variant="outline">Compartir</Button>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* News Grid */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Últimas noticias
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {newsArticles.map((article) => (
-                <Card
-                  key={article.id}
-                  className="overflow-hidden hover:shadow-xl transition-shadow border border-gray-200"
-                >
-                  <div
-                    className={`bg-gradient-to-br ${article.gradientFrom} ${article.gradientTo} h-48 flex items-center justify-center`}
-                  >
-                    {getIcon(article.icon)}
-                  </div>
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <span
-                        className={`bg-${article.categoryColor}-100 text-${article.categoryColor}-700 text-xs px-2 py-1 rounded-full font-semibold`}
-                      >
-                        {article.category}
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-semibold">
+                        {featuredNews.category}
                       </span>
-                      <span className="text-gray-500 text-xs">
-                        {article.date}
+                      <span className="text-gray-500 text-sm">
+                        {featuredNews.date}
                       </span>
                     </div>
-                    <CardTitle className="text-xl">{article.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-gray-600 text-sm leading-relaxed mb-4">
-                      {article.description}
-                    </CardDescription>
-                    <Button
-                      variant="link"
-                      className="p-0 text-blue-600 hover:text-blue-700"
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                      {featuredNews.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      {featuredNews.description}
+                    </p>
+                    <div className="flex items-center space-x-4">
+                      <Button className="bg-blue-600 hover:bg-blue-700">
+                        Leer más
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                      <Button variant="outline">Compartir</Button>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* News Grid */}
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                Últimas noticias
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {newsArticles.map((article) => (
+                  <Card
+                    key={article.id}
+                    className="overflow-hidden hover:shadow-xl transition-shadow border border-gray-200"
+                  >
+                    <div
+                      className={`bg-gradient-to-br ${article.gradientFrom} ${article.gradientTo} h-48 flex items-center justify-center`}
                     >
-                      Leer más
-                      <ArrowRight className="ml-1 w-4 h-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+                      {getIcon(article.icon)}
+                    </div>
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <span
+                          className={`bg-${article.categoryColor}-100 text-${article.categoryColor}-700 text-xs px-2 py-1 rounded-full font-semibold`}
+                        >
+                          {article.category}
+                        </span>
+                        <span className="text-gray-500 text-xs">
+                          {article.date}
+                        </span>
+                      </div>
+                      <CardTitle className="text-xl">{article.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-gray-600 text-sm leading-relaxed mb-4">
+                        {article.description}
+                      </CardDescription>
+                      <Button
+                        variant="link"
+                        className="p-0 text-blue-600 hover:text-blue-700"
+                      >
+                        Leer más
+                        <ArrowRight className="ml-1 w-4 h-4" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>

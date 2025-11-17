@@ -13,7 +13,6 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 // ============================================
 // DATOS DE EVENTOS - Modificar aquí para actualizar contenido
@@ -114,9 +113,6 @@ const upcomingEvents = [
 ];
 
 export default function CalendarioPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <div className="min-h-screen bg-white">
       {/* <div className="bg-blue-600 text-white py-2 text-center text-sm">
@@ -132,14 +128,10 @@ export default function CalendarioPage() {
       </div> */}
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-purple-50 via-white to-pink-50 py-12">
+      <section className="bg-purple-50 py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <Calendar className="w-4 h-4 mr-2" />
-              Calendario OPENFIN
-            </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight text-balance">
+          <div className="max-w-7xl mx-auto mt-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl   font-extrabold text-gray-900 mb-6 leading-tight text-balance">
               Próximos Eventos y Actividades
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
@@ -154,11 +146,12 @@ export default function CalendarioPage() {
       {/* Filter Bar */}
       <section className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Todos los eventos
-            </h2>
-            {/* <Button
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Todos los eventos
+              </h2>
+              {/* <Button
               variant="outline"
               size="sm"
               className="flex items-center bg-transparent"
@@ -166,6 +159,7 @@ export default function CalendarioPage() {
               <Filter className="w-4 h-4 mr-2" />
               Filtrar por categoría
             </Button> */}
+            </div>
           </div>
         </div>
       </section>
@@ -173,110 +167,110 @@ export default function CalendarioPage() {
       {/* Eventos Section */}
       <section className="py-12 bg-slate-50">
         <div className="container mx-auto px-4">
-          {/* Upcoming Events */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Próximos eventos
-            </h2>
+          <div className="max-w-7xl mx-auto">
+            {/* Upcoming Events */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+                Próximos eventos
+              </h2>
 
-            <div className="space-y-6 max-w-5xl mx-auto">
-              {upcomingEvents.map((event) => (
-                <Card
-                  key={event.id}
-                  className={`${
-                    event.featured
-                      ? "border-2 border-blue-200 shadow-xl"
-                      : "border border-gray-200"
-                  } hover:shadow-2xl transition-shadow`}
-                >
-                  <CardContent className={event.featured ? "p-8" : "p-6"}>
-                    <div className="grid md:grid-cols-5 gap-6">
-                      <div
-                        className={`md:col-span-1 flex flex-col items-center justify-center bg-gradient-to-br ${event.gradientFrom} ${event.gradientTo} rounded-xl p-6 text-white`}
-                      >
+              <div className="space-y-6">
+                {upcomingEvents.map((event) => (
+                  <Card
+                    key={event.id}
+                    className={`${
+                      event.featured
+                        ? "border-2 border-blue-200 shadow-xl"
+                        : "border border-gray-200"
+                    } hover:shadow-2xl transition-shadow`}
+                  >
+                    <CardContent className={event.featured ? "p-8" : "p-6"}>
+                      <div className="grid md:grid-cols-5 gap-6">
                         <div
-                          className={`${
-                            event.featured ? "text-5xl" : "text-4xl"
-                          } font-bold mb-1`}
+                          className={`md:col-span-1 flex flex-col items-center justify-center bg-gradient-to-br ${event.gradientFrom} ${event.gradientTo} rounded-xl p-6 text-white`}
                         >
-                          {event.day}
-                        </div>
-                        <div className="text-sm uppercase tracking-wide">
-                          {event.month}
-                        </div>
-                        <div className="text-xs mt-1 opacity-80">
-                          {event.year}
-                        </div>
-                      </div>
-                      <div className="md:col-span-4">
-                        <div className="flex items-center space-x-2 mb-3">
-                          {event.tags.map((tag, index) => (
-                            <span
-                              key={index}
-                              className={`bg-${event.categoryColor}-100 text-${event.categoryColor}-700 text-xs px-3 py-1 rounded-full font-semibold`}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <h3
-                          className={`${
-                            event.featured ? "text-2xl" : "text-xl"
-                          } font-bold text-gray-900 mb-3`}
-                        >
-                          {event.title}
-                        </h3>
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-gray-600 text-sm">
-                            <Clock
-                              className={`w-4 h-4 mr-2 text-${event.categoryColor}-600`}
-                            />
-                            <span>{event.time}</span>
+                          <div
+                            className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-1`}
+                          >
+                            {event.day}
                           </div>
-                          <div className="flex items-center text-gray-600 text-sm">
-                            <MapPin
-                              className={`w-4 h-4 mr-2 text-${event.categoryColor}-600`}
-                            />
-                            <span>{event.location}</span>
+                          <div className="text-sm uppercase tracking-wide">
+                            {event.month}
                           </div>
-                          {event.capacity && (
+                          <div className="text-xs mt-1 opacity-80">
+                            {event.year}
+                          </div>
+                        </div>
+                        <div className="md:col-span-4">
+                          <div className="flex items-center space-x-2 mb-3">
+                            {event.tags.map((tag, index) => (
+                              <span
+                                key={index}
+                                className={`bg-${event.categoryColor}-100 text-${event.categoryColor}-700 text-xs px-3 py-1 rounded-full font-semibold`}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <h3
+                            className={`${
+                              event.featured ? "text-2xl" : "text-xl"
+                            } font-bold text-gray-900 mb-3`}
+                          >
+                            {event.title}
+                          </h3>
+                          <div className="space-y-2 mb-4">
                             <div className="flex items-center text-gray-600 text-sm">
-                              <Users
+                              <Clock
                                 className={`w-4 h-4 mr-2 text-${event.categoryColor}-600`}
                               />
-                              <span>{event.capacity}</span>
+                              <span>{event.time}</span>
                             </div>
-                          )}
-                        </div>
-                        <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                          {event.description}
-                        </p>
-                        <div className="flex space-x-3">
-                          {event.featured ? (
-                            <>
-                              <Button className="bg-blue-600 hover:bg-blue-700">
-                                Inscribirse
-                                <ArrowRight className="ml-2 w-4 h-4" />
+                            <div className="flex items-center text-gray-600 text-sm">
+                              <MapPin
+                                className={`w-4 h-4 mr-2 text-${event.categoryColor}-600`}
+                              />
+                              <span>{event.location}</span>
+                            </div>
+                            {event.capacity && (
+                              <div className="flex items-center text-gray-600 text-sm">
+                                <Users
+                                  className={`w-4 h-4 mr-2 text-${event.categoryColor}-600`}
+                                />
+                                <span>{event.capacity}</span>
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                            {event.description}
+                          </p>
+                          <div className="flex space-x-3">
+                            {event.featured ? (
+                              <>
+                                <Button className="bg-blue-600 hover:bg-blue-700">
+                                  Inscribirse
+                                  <ArrowRight className="ml-2 w-4 h-4" />
+                                </Button>
+                                <Button variant="outline">Ver detalles</Button>
+                              </>
+                            ) : (
+                              <Button variant="outline" size="sm">
+                                {event.id === 2
+                                  ? "Ver agenda"
+                                  : event.id === 3
+                                  ? "Más información"
+                                  : event.id === 4
+                                  ? "Inscribirse"
+                                  : "Agregar al calendario"}
                               </Button>
-                              <Button variant="outline">Ver detalles</Button>
-                            </>
-                          ) : (
-                            <Button variant="outline" size="sm">
-                              {event.id === 2
-                                ? "Ver agenda"
-                                : event.id === 3
-                                ? "Más información"
-                                : event.id === 4
-                                ? "Inscribirse"
-                                : "Agregar al calendario"}
-                            </Button>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>

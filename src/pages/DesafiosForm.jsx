@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,9 +29,6 @@ import {
 import { postInscripcionDesafio } from "../api/empresas-desafios.js";
 
 export default function DesafiosForm() {
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -297,7 +294,7 @@ export default function DesafiosForm() {
             <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-sky-500 opacity-30"></div>
             <div className="relative h-full flex items-center justify-center">
               <div className="text-center text-white">
-                <h1 className="text-4xl font-black mb-2">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-2">
                   Inscribe tu desafío tecnológico
                 </h1>
                 <div className="bg-sky-600/50 backdrop-blur-sm rounded-full px-6 py-2 mt-3 mx-auto max-w-md">

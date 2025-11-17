@@ -251,7 +251,7 @@ export default function DesafiosPage() {
         <div className="relative max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-center lg:items-start text-center lg:text-left">
             <div className="mb-8 lg:mb-0 lg:col-span-2">
-              <h1 className="text-5xl font-extrabold text-cyan-900 mb-6 tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl  font-extrabold text-cyan-900 mb-6 tracking-tight">
                 Desafíos de Ingeniería PUCV
               </h1>
               <div className="w-24 h-0.5 bg-gradient-to-r from-sky-600 to-cyan-500 rounded-full mx-auto lg:mx-0 mb-6"></div>

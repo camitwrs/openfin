@@ -167,7 +167,7 @@ export default function AcademicosForm({ onSubmit }) {
             <div className="absolute inset-0 bg-black/20"></div>
             <div className="relative h-full flex items-center justify-center">
               <div className="text-center text-white">
-                <h1 className="text-3xl font-bold mb-2">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-2">
                   Formulario de Inscripción
                 </h1>
                 <Badge

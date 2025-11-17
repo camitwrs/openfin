@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ArrowLeft,
   HelpCircle,
@@ -19,11 +19,6 @@ import { Badge } from "@/components/ui/badge";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function AcademiaIDPage() {
-  // Hook para asegurar que la página siempre comience arriba al montarse
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const navigate = useNavigate();
 
   // Función para volver a la página anterior
